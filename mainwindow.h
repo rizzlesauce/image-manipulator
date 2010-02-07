@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QtGui/QMainWindow>
+#include "rimage.h"
+//#include <jack/jack.h>
 
 namespace Ui
 {
@@ -21,7 +23,16 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    RImage *image;
 
+    void setImage(RImage* img);
+
+private slots:
+    //void plotHistogram();
+
+private slots:
+    void on_dial_valueChanged(int value);
+    void on_printSamplesButton_pressed();
 };
 
 #endif // MAINWINDOW_H
