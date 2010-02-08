@@ -1,7 +1,7 @@
 #include "imagewindow.h"
 #include "ui_imagewindow.h"
 
-#include "gnuplot-cpp/gnuplot_i.hpp"
+#include "gnuplot_i.h"
 #include "Debugger.h"
 #include <QFileDialog>
 

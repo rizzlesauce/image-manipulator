@@ -27,21 +27,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "gnuplot_i.hpp"
-
-/*
-#include <iostream>
-#include <string>
-#include <vector>
-#include <fstream>
-#include <sstream>              // for std::ostringstream
-#include <stdexcept>
-#include <cstdio>
-#include <cstdlib>              // for getenv()
-#include <list>                 // for std::list
-
-using std::cout;
-*/
+#include "gnuplot_i.h"
 
 //declare classes in global namespace
 

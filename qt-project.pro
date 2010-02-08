@@ -8,16 +8,15 @@ SOURCES += main.cpp \
     mainwindow.cpp \
     rimage.cpp \
     imagewindow.cpp \
-    FileLogger.cc \
-    Debugger.cc \
-    Utils.cc \
-    gnuplot-cpp/gnuplot_i.cpp
+    Utils.cpp \
+    gnuplot_i.cpp \
+    FileLogger.cpp \
+    Debugger.cpp
 HEADERS += mainwindow.h \
     rimage.h \
-    gnuplot-cpp/gnuplot_i.hpp \
     imagewindow.h \
-    FileLogger.h \
     Debugger.h \
-    Utils.h
+    Utils.h \
+    gnuplot_i.h
 FORMS += mainwindow.ui \
     imagewindow.ui

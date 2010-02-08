@@ -1,0 +1,13 @@
+make clean
+
+mkdir project-files
+
+cp *.cpp project-files
+cp *.h project-files
+cp *.ui project-files
+cp *.pro project-files
+cp Makefile project-files
+
+tar cvzf project-files.tgz project-files
+
+rm -r project-files

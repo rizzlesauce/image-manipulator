@@ -6,7 +6,7 @@
 #include <cmath>
 #include <vector>
 #include <iostream>
-#include "gnuplot-cpp/gnuplot_i.hpp"
+#include "gnuplot_i.h"
 
 using namespace std;
 
