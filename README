@@ -1,0 +1,6 @@
+This project depends on:
+qmake (and the QT library)
+gnuplot (for producing graphs and histograms)
+
+To compile just run:
+make

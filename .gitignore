@@ -12,8 +12,9 @@ qt-project
 *.pgm
 *.ppm
 
-# qt moc_ files
+# qt generated files
 moc_*
+ui_*
 
 # user files
 *.user
