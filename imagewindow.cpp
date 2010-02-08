@@ -3,6 +3,7 @@
 
 #include "gnuplot-cpp/gnuplot_i.hpp"
 #include "Debugger.h"
+#include <QFileDialog>
 
 ImageWindow::ImageWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,7 +13,6 @@ ImageWindow::ImageWindow(QWidget *parent) :
 
     //setCentralWidget(m_ui->label);
 
-    connect(m_ui->actionShow_Histogram, SIGNAL(triggered()), this, SLOT(createHistogram()));
     connect(m_ui->actionEqualize, SIGNAL(triggered()), this, SLOT(equalizeImage()));
 
     Debugger::getInstance().print("imagewindow initialized\n");
@@ -21,6 +21,19 @@ ImageWindow::ImageWindow(QWidget *parent) :
 ImageWindow::~ImageWindow()
 {
     delete m_ui;
+}
+
+void ImageWindow::saveImage() {
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save Image"), "./",
+        tr("Image Files (*.png *.ppm *.pgm *.jpg *.bmp)"));
+
+    if (fileName == NULL) {
+            // no file chosen
+    } else {
+            // file chosen
+        //setImage(new RImage(fileName));
+        image.save(fileName);
+    }
 }
 
 void ImageWindow::changeEvent(QEvent *e)
@@ -52,13 +65,13 @@ void ImageWindow::equalizeImage() {
     */
 }
 
-void ImageWindow::createHistogram() {
+void ImageWindow::createHistogram(bool display, string fileName) {
     vector<int> counts;
     image.getHistogram(counts);
 
     int numValues = counts.size();
 
-    string imagePath = "histogram.ps";
+    string imagePath = fileName;
 
     int biggestCount = 0;
 
@@ -77,7 +90,9 @@ void ImageWindow::createHistogram() {
 
             Gnuplot gplot;
 
-            gplot.save(imagePath);
+            if (!imagePath.empty()) {
+                gplot.save(imagePath);
+            }
             gplot.set_style("histograms");
             //gplot.set_samples(300
             gplot.set_xrange(0, numValues);
@@ -86,13 +101,15 @@ void ImageWindow::createHistogram() {
             gplot.set_yrange(0, biggestCount);
             gplot.plot_x(counts);
 
-            gplot.showonscreen();
-            gplot.replot();
+            if (display) {
+                gplot.showonscreen();
+                gplot.replot();
 
-            // wait for input
-            cin.clear();
-            cin.ignore(cin.rdbuf()->in_avail());
-            cin.get();
+                // wait for input
+                cin.clear();
+                cin.ignore(cin.rdbuf()->in_avail());
+                cin.get();
+            }
 
             exit(0);
         } catch (GnuplotException ge) {
@@ -117,4 +134,27 @@ void ImageWindow::reloadPixmap() {
     m_ui->label->setPixmap(QPixmap::fromImage(image));
     //m_ui->label->adjustSize();
     //m_ui->label->setGeometry(0, 0, image.width(), image.height());
+}
+
+void ImageWindow::on_actionSave_triggered()
+{
+    saveImage();
+}
+
+void ImageWindow::on_actionSave_Histogram_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save Histogram"), "./",
+        tr("Postscript Files (*.ps *.eps)"));
+
+    if (fileName == NULL) {
+            // no file chosen
+    } else {
+            // file chosen
+        createHistogram(false, fileName.toStdString());
+    }
+}
+
+void ImageWindow::on_actionShow_Histogram_triggered()
+{
+    createHistogram(true, "");
 }

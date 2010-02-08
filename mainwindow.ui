@@ -26,35 +26,12 @@
       <item>
        <widget class="QPlainTextEdit" name="plainTextEdit"/>
       </item>
-      <item>
-       <widget class="QPushButton" name="printSamplesButton">
-        <property name="text">
-         <string>Print Samples</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </item>
     <item>
      <widget class="QLabel" name="imageLabel">
       <property name="text">
        <string/>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QDial" name="dial">
-      <property name="maximum">
-       <number>100</number>
-      </property>
-      <property name="wrapping">
-       <bool>false</bool>
-      </property>
-      <property name="notchTarget">
-       <double>5.000000000000000</double>
-      </property>
-      <property name="notchesVisible">
-       <bool>true</bool>
       </property>
      </widget>
     </item>

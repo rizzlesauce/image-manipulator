@@ -15,6 +15,8 @@ public:
     ~ImageWindow();
 
     void setImage(RImage& img);
+    void createHistogram(bool display, string fileName = "");
+    void saveImage();
 
 protected:
     void changeEvent(QEvent *e);
@@ -24,8 +26,10 @@ private:
     RImage image;
 
 private slots:
+    void on_actionShow_Histogram_triggered();
+    void on_actionSave_Histogram_triggered();
+    void on_actionSave_triggered();
     void equalizeImage();
-    void createHistogram();
     void reloadPixmap();
 };
 

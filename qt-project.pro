@@ -21,8 +21,3 @@ HEADERS += mainwindow.h \
     Utils.h
 FORMS += mainwindow.ui \
     imagewindow.ui
-
-# add external library links
-LIBS += -ljack \
-    -lpthread \
-    -lrt

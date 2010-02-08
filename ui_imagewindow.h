@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'imagewindow.ui'
 **
-** Created: Sat Feb 6 11:36:43 2010
+** Created: Mon Feb 8 15:27:48 2010
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -32,6 +32,7 @@ public:
     QAction *actionClose;
     QAction *actionEqualize;
     QAction *actionShow_Histogram;
+    QAction *actionSave_Histogram;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QLabel *label;
@@ -59,6 +60,8 @@ public:
         actionEqualize->setObjectName(QString::fromUtf8("actionEqualize"));
         actionShow_Histogram = new QAction(ImageWindow);
         actionShow_Histogram->setObjectName(QString::fromUtf8("actionShow_Histogram"));
+        actionSave_Histogram = new QAction(ImageWindow);
+        actionSave_Histogram->setObjectName(QString::fromUtf8("actionSave_Histogram"));
         centralwidget = new QWidget(ImageWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         sizePolicy.setHeightForWidth(centralwidget->sizePolicy().hasHeightForWidth());
@@ -94,6 +97,7 @@ public:
         menubar->addAction(menuFile->menuAction());
         menubar->addAction(menuImage->menuAction());
         menuFile->addAction(actionSave);
+        menuFile->addAction(actionSave_Histogram);
         menuFile->addSeparator();
         menuFile->addAction(actionClose);
         menuImage->addAction(actionEqualize);
@@ -112,6 +116,7 @@ public:
         actionClose->setText(QApplication::translate("ImageWindow", "Close", 0, QApplication::UnicodeUTF8));
         actionEqualize->setText(QApplication::translate("ImageWindow", "Equalize", 0, QApplication::UnicodeUTF8));
         actionShow_Histogram->setText(QApplication::translate("ImageWindow", "Show Histogram", 0, QApplication::UnicodeUTF8));
+        actionSave_Histogram->setText(QApplication::translate("ImageWindow", "Save Histogram", 0, QApplication::UnicodeUTF8));
         label->setText(QString());
         menuFile->setTitle(QApplication::translate("ImageWindow", "File", 0, QApplication::UnicodeUTF8));
         menuImage->setTitle(QApplication::translate("ImageWindow", "Image", 0, QApplication::UnicodeUTF8));

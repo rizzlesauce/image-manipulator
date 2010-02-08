@@ -62,6 +62,7 @@
      <string>File</string>
     </property>
     <addaction name="actionSave"/>
+    <addaction name="actionSave_Histogram"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
    </widget>
@@ -101,6 +102,11 @@
   <action name="actionShow_Histogram">
    <property name="text">
     <string>Show Histogram</string>
+   </property>
+  </action>
+  <action name="actionSave_Histogram">
+   <property name="text">
+    <string>Save Histogram</string>
    </property>
   </action>
  </widget>

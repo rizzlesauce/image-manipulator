@@ -1,8 +1,19 @@
+# object files
 *.o
 
+# binaries
 qt-project
 
+# images
 *.ps
 *.eps
 *.png
 *.jpg
+*.pgm
+*.ppm
+
+# qt moc_ files
+moc_*
+
+# user files
+*.user
