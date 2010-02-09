@@ -18,3 +18,7 @@ ui_*
 
 # user files
 *.user
+
+# eclipse files
+*.project
+*.cproject
