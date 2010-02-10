@@ -4,6 +4,9 @@
 # binaries
 qt-project
 
+# tar balls
+*.tgz
+
 # images
 *.ps
 *.eps
