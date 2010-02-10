@@ -15,7 +15,8 @@ public:
     ~ImageWindow();
 
     void setImage(RImage& img);
-    void createHistogram(bool display, string fileName = "");
+    void createHistogram(bool display = true, string fileName = "");
+    void plotEqualizationTable(bool display = true, string fileName = "");
     void saveImage();
 
 protected:
@@ -26,6 +27,8 @@ private:
     RImage image;
 
 private slots:
+    void on_actionSave_Equalization_Table_Plot_triggered();
+    void on_actionShow_Equalization_Table_triggered();
     void on_actionShow_Histogram_triggered();
     void on_actionSave_Histogram_triggered();
     void on_actionSave_triggered();

@@ -72,6 +72,8 @@
     </property>
     <addaction name="actionEqualize"/>
     <addaction name="actionShow_Histogram"/>
+    <addaction name="actionShow_Equalization_Table"/>
+    <addaction name="actionSave_Equalization_Table_Plot"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuImage"/>
@@ -107,6 +109,16 @@
   <action name="actionSave_Histogram">
    <property name="text">
     <string>Save Histogram</string>
+   </property>
+  </action>
+  <action name="actionShow_Equalization_Table">
+   <property name="text">
+    <string>Show Equalization Table Plot</string>
+   </property>
+  </action>
+  <action name="actionSave_Equalization_Table_Plot">
+   <property name="text">
+    <string>Save Equalization Table Plot</string>
    </property>
   </action>
  </widget>

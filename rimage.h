@@ -14,6 +14,7 @@ public:
     RImage(QString&);
 
     void equalize();
+    void equalize(vector<int> &table);
 
     vector<int>& getHistogram(vector<int>& hist);
 };

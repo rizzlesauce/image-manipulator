@@ -121,6 +121,63 @@ void ImageWindow::createHistogram(bool display, string fileName) {
     }
 }
 
+void ImageWindow::plotEqualizationTable(bool display, string fileName) {
+    RImage img = image;
+    vector<int> table;
+    img.equalize(table);
+
+    int numValues = table.size();
+
+    string imagePath = fileName;
+
+    int biggestCount = 0;
+
+    for (uint x = 0; x < table.size(); ++x) {
+        if (table[x] > biggestCount) {
+            biggestCount = table[x];
+        }
+    }
+
+    // create a new process
+    pid_t pId = fork();
+
+    if (pId == 0) {
+            // child process
+        try {
+
+            Gnuplot gplot;
+
+            if (!imagePath.empty()) {
+                gplot.save(imagePath);
+            }
+            gplot.set_style("points");
+            //gplot.set_samples(300
+            gplot.set_xrange(0, numValues);
+            gplot.set_xlabel("Value");
+            gplot.set_ylabel("Mapped Value");
+            gplot.set_yrange(0, biggestCount);
+            gplot.plot_x(table);
+
+            if (display) {
+                gplot.showonscreen();
+                gplot.replot();
+
+                // wait for input
+                cin.clear();
+                cin.ignore(cin.rdbuf()->in_avail());
+                cin.get();
+            }
+
+            exit(0);
+        } catch (GnuplotException ge) {
+            cout << ge.what() << endl;
+            exit(1);
+        }
+    } else {
+            // parent
+    }
+}
+
 void ImageWindow::setImage(RImage &img) {
     image = img;
     //resize(0, 0);
@@ -157,4 +214,22 @@ void ImageWindow::on_actionSave_Histogram_triggered()
 void ImageWindow::on_actionShow_Histogram_triggered()
 {
     createHistogram(true, "");
+}
+
+void ImageWindow::on_actionShow_Equalization_Table_triggered()
+{
+    plotEqualizationTable(true, "");
+}
+
+void ImageWindow::on_actionSave_Equalization_Table_Plot_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save Histogram"), "./",
+        tr("Postscript Files (*.ps *.eps)"));
+
+    if (fileName == NULL) {
+            // no file chosen
+    } else {
+            // file chosen
+        plotEqualizationTable(false, fileName.toStdString());
+    }
 }

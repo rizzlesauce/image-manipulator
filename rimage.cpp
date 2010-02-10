@@ -10,6 +10,11 @@ RImage::RImage() : QImage()
 RImage::RImage(QString& filename) : QImage(filename) {}
 
 void RImage::equalize() {
+    vector<int> table;
+    equalize(table);
+}
+
+void RImage::equalize(vector<int> &table) {
     // equalize the histogram of the image
 
     // create the conversion table
@@ -20,7 +25,7 @@ void RImage::equalize() {
     int numValues = hist.size();
     int area = width() * height();
 
-    vector<int> table(numValues, 0);
+    table.resize(numValues, 0);
 
     int count = 0;
 
