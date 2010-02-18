@@ -70,10 +70,19 @@
     <property name="title">
      <string>Image</string>
     </property>
+    <widget class="QMenu" name="menuApply_Filter">
+     <property name="title">
+      <string>Apply Filter...</string>
+     </property>
+     <addaction name="actionUniform_Average"/>
+    </widget>
+    <addaction name="actionClone"/>
     <addaction name="actionEqualize"/>
     <addaction name="actionShow_Histogram"/>
     <addaction name="actionShow_Equalization_Table"/>
     <addaction name="actionSave_Equalization_Table_Plot"/>
+    <addaction name="actionAverage_With_Images"/>
+    <addaction name="menuApply_Filter"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuImage"/>
@@ -119,6 +128,21 @@
   <action name="actionSave_Equalization_Table_Plot">
    <property name="text">
     <string>Save Equalization Table Plot</string>
+   </property>
+  </action>
+  <action name="actionAverage_With_Images">
+   <property name="text">
+    <string>Average With Images...</string>
+   </property>
+  </action>
+  <action name="actionClone">
+   <property name="text">
+    <string>Clone</string>
+   </property>
+  </action>
+  <action name="actionUniform_Average">
+   <property name="text">
+    <string>Uniform Average...</string>
    </property>
   </action>
  </widget>

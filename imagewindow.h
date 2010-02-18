@@ -19,12 +19,13 @@ public:
     void plotEqualizationTable(bool display = true, string fileName = "");
     void saveImage();
 
+    RImage image;
+
 protected:
     void changeEvent(QEvent *e);
 
 private:
     Ui::ImageWindow *m_ui;
-    RImage image;
 
 private slots:
     void on_actionSave_Equalization_Table_Plot_triggered();
@@ -34,6 +35,9 @@ private slots:
     void on_actionSave_triggered();
     void equalizeImage();
     void reloadPixmap();
+    void on_actionAverage_With_Images_triggered();
+    void on_actionClone_triggered();
+    void on_actionUniform_Average_triggered();
 };
 
 #endif // IMAGEWINDOW_H

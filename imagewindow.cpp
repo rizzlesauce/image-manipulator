@@ -1,9 +1,10 @@
 #include "imagewindow.h"
 #include "ui_imagewindow.h"
-
+#include "averageimagesdialog.h"
 #include "gnuplot_i.h"
 #include "Debugger.h"
 #include <QFileDialog>
+#include "uniformaveragedialog.h"
 
 ImageWindow::ImageWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,6 +22,14 @@ ImageWindow::ImageWindow(QWidget *parent) :
 ImageWindow::~ImageWindow()
 {
     delete m_ui;
+}
+
+/**
+ * Open up the average images dialog.
+ */
+void ImageWindow::on_actionAverage_With_Images_triggered() {
+	AverageImagesDialog *dialog = new AverageImagesDialog(this);
+	dialog->show();
 }
 
 void ImageWindow::saveImage() {
@@ -63,6 +72,12 @@ void ImageWindow::equalizeImage() {
 
     reloadPixmap();
     */
+}
+
+void ImageWindow::on_actionClone_triggered() {
+	ImageWindow *newWindow = new ImageWindow(parentWidget());
+	newWindow->setImage(image);
+	newWindow->show();
 }
 
 void ImageWindow::createHistogram(bool display, string fileName) {
@@ -232,4 +247,9 @@ void ImageWindow::on_actionSave_Equalization_Table_Plot_triggered()
             // file chosen
         plotEqualizationTable(false, fileName.toStdString());
     }
+}
+
+void ImageWindow::on_actionUniform_Average_triggered() {
+	UniformAverageDialog *dialog = new UniformAverageDialog(this);
+	dialog->show();
 }

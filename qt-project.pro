@@ -4,7 +4,9 @@
 # QT += phonon
 TARGET = qt-project
 TEMPLATE = app
-SOURCES += main.cpp \
+SOURCES += uniformaveragedialog.cpp \
+    averageimagesdialog.cpp \
+    main.cpp \
     mainwindow.cpp \
     rimage.cpp \
     imagewindow.cpp \
@@ -12,11 +14,15 @@ SOURCES += main.cpp \
     gnuplot_i.cpp \
     FileLogger.cpp \
     Debugger.cpp
-HEADERS += mainwindow.h \
+HEADERS += uniformaveragedialog.h \
+    averageimagesdialog.h \
+    mainwindow.h \
     rimage.h \
     imagewindow.h \
     Debugger.h \
     Utils.h \
     gnuplot_i.h
-FORMS += mainwindow.ui \
+FORMS += uniformaveragedialog.ui \
+    averageimagesdialog.ui \
+    mainwindow.ui \
     imagewindow.ui

@@ -11,10 +11,12 @@ class RImage : public QImage
 
 public:
     RImage();
-    RImage(QString&);
+    RImage(const QString&);
 
     void equalize();
     void equalize(vector<int> &table);
+    void averageWithImages(vector<RImage> &images);
+    void weightedFilter(vector<vector<int> > &weights);
 
     vector<int>& getHistogram(vector<int>& hist);
 };
