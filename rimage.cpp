@@ -5,6 +5,8 @@
 #include <sstream>
 #include <sstream>
 #include <vector>
+#include <list>
+using namespace std;
 
 RImage::RImage() : QImage()
 {
@@ -18,7 +20,6 @@ void RImage::equalize() {
 }
 
 void RImage::averageWithImages(vector<RImage> &images) {
-	RImage other;
 	int value;
 
 	for (int x = 0; x < width(); ++x) {
@@ -152,4 +153,46 @@ vector<int>& RImage::getHistogram(vector<int>& hist) {
     }
 
     return hist;
+}
+
+void RImage::medianFilter(int neighborhoodSize) {
+	RImage original(*this);
+
+	int sidesLength = neighborhoodSize / 2;
+
+	for (int x = 0; x < width(); ++x) {
+		for (int y = 0; y < height(); ++y) {
+			// walk around the neighborhood
+			int x1 = x - sidesLength;
+			int x2 = x + sidesLength;
+			int y1 = y - sidesLength;
+			int y2 = y + sidesLength;
+
+			if (x1 < 0) {
+				x1 = 0;
+			}
+			if (x2 > width()) {
+				x2 = width();
+			}
+			if (y1 < 0) {
+				y1 = 0;
+			}
+			if (y2 > height()) {
+				y2 = height();
+			}
+
+			list<int> values;
+			for (int xx = x1; xx < x2; ++xx) {
+				for (int yy = y1; yy < y2; ++yy) {
+					values.push_back(original.pixelIndex(xx, yy));
+				}
+			}
+			values.sort();
+			list<int>::iterator it = values.begin();
+			for (uint i = 0; i < values.size() / 2; ++it, ++i);
+
+			setPixel(x, y, *it);
+		}
+	}
+
 }

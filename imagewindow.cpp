@@ -5,6 +5,7 @@
 #include "Debugger.h"
 #include <QFileDialog>
 #include "uniformaveragedialog.h"
+#include "medianfilterdialog.h"
 
 ImageWindow::ImageWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -251,5 +252,10 @@ void ImageWindow::on_actionSave_Equalization_Table_Plot_triggered()
 
 void ImageWindow::on_actionUniform_Average_triggered() {
 	UniformAverageDialog *dialog = new UniformAverageDialog(this);
+	dialog->show();
+}
+
+void ImageWindow::on_actionMedian_Filter_triggered() {
+	MedianFilterDialog *dialog = new MedianFilterDialog(this);
 	dialog->show();
 }

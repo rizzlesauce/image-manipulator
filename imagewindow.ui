@@ -75,6 +75,7 @@
       <string>Apply Filter...</string>
      </property>
      <addaction name="actionUniform_Average"/>
+     <addaction name="actionMedian_Filter"/>
     </widget>
     <addaction name="actionClone"/>
     <addaction name="actionEqualize"/>
@@ -143,6 +144,11 @@
   <action name="actionUniform_Average">
    <property name="text">
     <string>Uniform Average...</string>
+   </property>
+  </action>
+  <action name="actionMedian_Filter">
+   <property name="text">
+    <string>Median Filter...</string>
    </property>
   </action>
  </widget>
