@@ -1,12 +1,14 @@
 make clean
 
 mkdir project-files
+mkdir project-files/debug
+mkdir project-files/release
 
 cp *.cpp project-files
 cp *.h project-files
 cp *.ui project-files
 cp *.pro project-files
-cp Makefile project-files
+cp Makefile* project-files
 cp README project-files
 
 tar cvzf project-files.tgz project-files
