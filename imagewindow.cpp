@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include "uniformaveragedialog.h"
 #include "medianfilterdialog.h"
+#include "unsharpmaskdialog.h"
 
 ImageWindow::ImageWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -257,5 +258,10 @@ void ImageWindow::on_actionUniform_Average_triggered() {
 
 void ImageWindow::on_actionMedian_Filter_triggered() {
 	MedianFilterDialog *dialog = new MedianFilterDialog(this);
+	dialog->show();
+}
+
+void ImageWindow::on_actionUnsharp_Mask_triggered() {
+	UnsharpMaskDialog *dialog = new UnsharpMaskDialog(this);
 	dialog->show();
 }

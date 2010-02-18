@@ -4,7 +4,9 @@
 # QT += phonon
 TARGET = qt-project
 TEMPLATE = app
-SOURCES += medianfilterdialog.cpp \
+SOURCES += customfilterdialog.cpp \
+    unsharpmaskdialog.cpp \
+    medianfilterdialog.cpp \
     uniformaveragedialog.cpp \
     averageimagesdialog.cpp \
     main.cpp \
@@ -15,7 +17,9 @@ SOURCES += medianfilterdialog.cpp \
     gnuplot_i.cpp \
     FileLogger.cpp \
     Debugger.cpp
-HEADERS += medianfilterdialog.h \
+HEADERS += customfilterdialog.h \
+    unsharpmaskdialog.h \
+    medianfilterdialog.h \
     uniformaveragedialog.h \
     averageimagesdialog.h \
     mainwindow.h \
@@ -24,7 +28,9 @@ HEADERS += medianfilterdialog.h \
     Debugger.h \
     Utils.h \
     gnuplot_i.h
-FORMS += medianfilterdialog.ui \
+FORMS += customfilterdialog.ui \
+    unsharpmaskdialog.ui \
+    medianfilterdialog.ui \
     uniformaveragedialog.ui \
     averageimagesdialog.ui \
     mainwindow.ui \

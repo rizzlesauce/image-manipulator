@@ -76,6 +76,7 @@
      </property>
      <addaction name="actionUniform_Average"/>
      <addaction name="actionMedian_Filter"/>
+     <addaction name="actionUnsharp_Mask"/>
     </widget>
     <addaction name="actionClone"/>
     <addaction name="actionEqualize"/>
@@ -149,6 +150,11 @@
   <action name="actionMedian_Filter">
    <property name="text">
     <string>Median Filter...</string>
+   </property>
+  </action>
+  <action name="actionUnsharp_Mask">
+   <property name="text">
+    <string>Unsharp Mask...</string>
    </property>
   </action>
  </widget>

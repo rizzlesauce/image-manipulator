@@ -39,6 +39,8 @@ private slots:
     void on_actionClone_triggered();
     void on_actionUniform_Average_triggered();
     void on_actionMedian_Filter_triggered();
+    void on_actionUnsharp_Mask_triggered();
+
 };
 
 #endif // IMAGEWINDOW_H

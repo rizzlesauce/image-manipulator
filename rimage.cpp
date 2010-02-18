@@ -42,6 +42,19 @@ void RImage::averageWithImages(vector<RImage> &images) {
 	}
 }
 
+void RImage::unsharpMask(int neighborhoodSize, int sharpeningLevel) {
+
+	//int negativeA = sharpeningLevel * -1;
+	vector<vector<int> > mask(neighborhoodSize, vector<int>(neighborhoodSize, -1));//negativeA));
+
+	int midIndex = neighborhoodSize / 2;
+
+	mask[midIndex][midIndex] = sharpeningLevel + (neighborhoodSize * 2) - 1;//sharpeningLevel * neighborhoodSize;
+	//mask[midIndex][midIndex] = neighborhoodSize * 2 - 1;
+
+	weightedFilter(mask);
+}
+
 /**
  * Filters must be of odd length or undefined behavior will result.
  */
@@ -88,6 +101,12 @@ void RImage::weightedFilter(vector<vector<int> > &weights) {
 			}
 
 			int value = floor((sumOfValues / sumOfWeights) + 0.5);
+
+			if (value < 0) {
+				value = 0;
+			} else if (value > 255) {
+				value = 255;
+			}
 
 			setPixel(x, y, value);
 		}

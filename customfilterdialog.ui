@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CustomFilterDialogClass</class>
+ <widget class="QDialog" name="CustomFilterDialogClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>514</width>
+    <height>369</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>CustomFilterDialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <widget class="QSpinBox" name="spinBox_3"/>
+   </item>
+   <item row="15" column="1">
+    <widget class="QSpinBox" name="spinBox"/>
+   </item>
+   <item row="15" column="2">
+    <widget class="QSpinBox" name="spinBox_2"/>
+   </item>
+   <item row="15" column="0">
+    <widget class="QSpinBox" name="spinBox_5"/>
+   </item>
+   <item row="1" column="1">
+    <widget class="QSpinBox" name="spinBox_6"/>
+   </item>
+   <item row="1" column="2">
+    <widget class="QSpinBox" name="spinBox_9"/>
+   </item>
+   <item row="15" column="3">
+    <widget class="QSpinBox" name="spinBox_11"/>
+   </item>
+   <item row="15" column="4">
+    <widget class="QSpinBox" name="spinBox_12"/>
+   </item>
+   <item row="15" column="5">
+    <widget class="QSpinBox" name="spinBox_13"/>
+   </item>
+   <item row="15" column="6">
+    <widget class="QSpinBox" name="spinBox_14"/>
+   </item>
+   <item row="15" column="7">
+    <widget class="QSpinBox" name="spinBox_15"/>
+   </item>
+   <item row="15" column="8">
+    <widget class="QSpinBox" name="spinBox_16"/>
+   </item>
+   <item row="13" column="0">
+    <widget class="QSpinBox" name="spinBox_24"/>
+   </item>
+   <item row="12" column="0">
+    <widget class="QSpinBox" name="spinBox_20"/>
+   </item>
+   <item row="11" column="0">
+    <widget class="QSpinBox" name="spinBox_21"/>
+   </item>
+   <item row="10" column="0">
+    <widget class="QSpinBox" name="spinBox_10"/>
+   </item>
+   <item row="9" column="0">
+    <widget class="QSpinBox" name="spinBox_18"/>
+   </item>
+   <item row="5" column="0">
+    <widget class="QSpinBox" name="spinBox_19"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QSpinBox" name="spinBox_23"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QSpinBox" name="spinBox_22"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QSpinBox" name="spinBox_17"/>
+   </item>
+   <item row="2" column="1">
+    <widget class="QSpinBox" name="spinBox_25"/>
+   </item>
+   <item row="2" column="2">
+    <widget class="QSpinBox" name="spinBox_26"/>
+   </item>
+   <item row="3" column="1">
+    <widget class="QSpinBox" name="spinBox_30"/>
+   </item>
+   <item row="3" column="2">
+    <widget class="QSpinBox" name="spinBox_31"/>
+   </item>
+   <item row="3" column="3">
+    <widget class="QSpinBox" name="spinBox_32"/>
+   </item>
+   <item row="1" column="3">
+    <widget class="QSpinBox" name="spinBox_35"/>
+   </item>
+   <item row="1" column="4">
+    <widget class="QSpinBox" name="spinBox_36"/>
+   </item>
+   <item row="15" column="9">
+    <widget class="QSpinBox" name="spinBox_33"/>
+   </item>
+   <item row="15" column="10">
+    <widget class="QSpinBox" name="spinBox_34"/>
+   </item>
+   <item row="4" column="1">
+    <widget class="QSpinBox" name="spinBox_4"/>
+   </item>
+   <item row="5" column="1">
+    <widget class="QSpinBox" name="spinBox_7"/>
+   </item>
+   <item row="4" column="2">
+    <widget class="QSpinBox" name="spinBox_8"/>
+   </item>
+   <item row="2" column="3">
+    <widget class="QSpinBox" name="spinBox_27"/>
+   </item>
+   <item row="9" column="1">
+    <widget class="QSpinBox" name="spinBox_28"/>
+   </item>
+   <item row="10" column="1">
+    <widget class="QSpinBox" name="spinBox_29"/>
+   </item>
+   <item row="13" column="1">
+    <widget class="QSpinBox" name="spinBox_37"/>
+   </item>
+   <item row="13" column="2">
+    <widget class="QSpinBox" name="spinBox_38"/>
+   </item>
+   <item row="13" column="3">
+    <widget class="QSpinBox" name="spinBox_39"/>
+   </item>
+   <item row="13" column="4">
+    <widget class="QSpinBox" name="spinBox_40"/>
+   </item>
+   <item row="13" column="5">
+    <widget class="QSpinBox" name="spinBox_41"/>
+   </item>
+   <item row="13" column="6">
+    <widget class="QSpinBox" name="spinBox_42"/>
+   </item>
+   <item row="13" column="7">
+    <widget class="QSpinBox" name="spinBox_43"/>
+   </item>
+   <item row="13" column="8">
+    <widget class="QSpinBox" name="spinBox_44"/>
+   </item>
+   <item row="13" column="9">
+    <widget class="QSpinBox" name="spinBox_45"/>
+   </item>
+   <item row="13" column="10">
+    <widget class="QSpinBox" name="spinBox_46"/>
+   </item>
+   <item row="12" column="1">
+    <widget class="QSpinBox" name="spinBox_47"/>
+   </item>
+   <item row="12" column="2">
+    <widget class="QSpinBox" name="spinBox_48"/>
+   </item>
+   <item row="12" column="3">
+    <widget class="QSpinBox" name="spinBox_49"/>
+   </item>
+   <item row="12" column="4">
+    <widget class="QSpinBox" name="spinBox_50"/>
+   </item>
+   <item row="12" column="5">
+    <widget class="QSpinBox" name="spinBox_51"/>
+   </item>
+   <item row="12" column="6">
+    <widget class="QSpinBox" name="spinBox_52"/>
+   </item>
+   <item row="12" column="7">
+    <widget class="QSpinBox" name="spinBox_53"/>
+   </item>
+   <item row="12" column="8">
+    <widget class="QSpinBox" name="spinBox_54"/>
+   </item>
+   <item row="12" column="9">
+    <widget class="QSpinBox" name="spinBox_55"/>
+   </item>
+   <item row="12" column="10">
+    <widget class="QSpinBox" name="spinBox_56"/>
+   </item>
+   <item row="11" column="1">
+    <widget class="QSpinBox" name="spinBox_57"/>
+   </item>
+   <item row="11" column="2">
+    <widget class="QSpinBox" name="spinBox_58"/>
+   </item>
+   <item row="11" column="3">
+    <widget class="QSpinBox" name="spinBox_59"/>
+   </item>
+   <item row="11" column="4">
+    <widget class="QSpinBox" name="spinBox_60"/>
+   </item>
+   <item row="11" column="5">
+    <widget class="QSpinBox" name="spinBox_61"/>
+   </item>
+   <item row="11" column="6">
+    <widget class="QSpinBox" name="spinBox_62"/>
+   </item>
+   <item row="11" column="7">
+    <widget class="QSpinBox" name="spinBox_63"/>
+   </item>
+   <item row="11" column="8">
+    <widget class="QSpinBox" name="spinBox_64"/>
+   </item>
+   <item row="11" column="9">
+    <widget class="QSpinBox" name="spinBox_65"/>
+   </item>
+   <item row="11" column="10">
+    <widget class="QSpinBox" name="spinBox_66"/>
+   </item>
+   <item row="10" column="2">
+    <widget class="QSpinBox" name="spinBox_67"/>
+   </item>
+   <item row="10" column="3">
+    <widget class="QSpinBox" name="spinBox_68"/>
+   </item>
+   <item row="10" column="4">
+    <widget class="QSpinBox" name="spinBox_69"/>
+   </item>
+   <item row="10" column="5">
+    <widget class="QSpinBox" name="spinBox_70"/>
+   </item>
+   <item row="10" column="6">
+    <widget class="QSpinBox" name="spinBox_71"/>
+   </item>
+   <item row="10" column="7">
+    <widget class="QSpinBox" name="spinBox_72"/>
+   </item>
+   <item row="10" column="8">
+    <widget class="QSpinBox" name="spinBox_73"/>
+   </item>
+   <item row="10" column="9">
+    <widget class="QSpinBox" name="spinBox_74"/>
+   </item>
+   <item row="10" column="10">
+    <widget class="QSpinBox" name="spinBox_75"/>
+   </item>
+   <item row="9" column="2">
+    <widget class="QSpinBox" name="spinBox_76"/>
+   </item>
+   <item row="9" column="3">
+    <widget class="QSpinBox" name="spinBox_77"/>
+   </item>
+   <item row="9" column="4">
+    <widget class="QSpinBox" name="spinBox_78"/>
+   </item>
+   <item row="9" column="8">
+    <widget class="QSpinBox" name="spinBox_82"/>
+   </item>
+   <item row="9" column="9">
+    <widget class="QSpinBox" name="spinBox_83"/>
+   </item>
+   <item row="9" column="10">
+    <widget class="QSpinBox" name="spinBox_84"/>
+   </item>
+   <item row="5" column="2">
+    <widget class="QSpinBox" name="spinBox_85"/>
+   </item>
+   <item row="5" column="3">
+    <widget class="QSpinBox" name="spinBox_86"/>
+   </item>
+   <item row="5" column="4">
+    <widget class="QSpinBox" name="spinBox_87"/>
+   </item>
+   <item row="5" column="5">
+    <widget class="QSpinBox" name="spinBox_88"/>
+   </item>
+   <item row="5" column="6">
+    <widget class="QSpinBox" name="spinBox_89"/>
+   </item>
+   <item row="5" column="7">
+    <widget class="QSpinBox" name="spinBox_90"/>
+   </item>
+   <item row="5" column="8">
+    <widget class="QSpinBox" name="spinBox_91"/>
+   </item>
+   <item row="5" column="9">
+    <widget class="QSpinBox" name="spinBox_92"/>
+   </item>
+   <item row="5" column="10">
+    <widget class="QSpinBox" name="spinBox_93"/>
+   </item>
+   <item row="4" column="3">
+    <widget class="QSpinBox" name="spinBox_94"/>
+   </item>
+   <item row="4" column="4">
+    <widget class="QSpinBox" name="spinBox_95"/>
+   </item>
+   <item row="4" column="5">
+    <widget class="QSpinBox" name="spinBox_96"/>
+   </item>
+   <item row="4" column="6">
+    <widget class="QSpinBox" name="spinBox_97"/>
+   </item>
+   <item row="4" column="7">
+    <widget class="QSpinBox" name="spinBox_98"/>
+   </item>
+   <item row="4" column="8">
+    <widget class="QSpinBox" name="spinBox_99"/>
+   </item>
+   <item row="4" column="9">
+    <widget class="QSpinBox" name="spinBox_100"/>
+   </item>
+   <item row="4" column="10">
+    <widget class="QSpinBox" name="spinBox_101"/>
+   </item>
+   <item row="3" column="4">
+    <widget class="QSpinBox" name="spinBox_102"/>
+   </item>
+   <item row="3" column="5">
+    <widget class="QSpinBox" name="spinBox_103"/>
+   </item>
+   <item row="3" column="6">
+    <widget class="QSpinBox" name="spinBox_104"/>
+   </item>
+   <item row="3" column="7">
+    <widget class="QSpinBox" name="spinBox_105"/>
+   </item>
+   <item row="3" column="8">
+    <widget class="QSpinBox" name="spinBox_106"/>
+   </item>
+   <item row="3" column="9">
+    <widget class="QSpinBox" name="spinBox_107"/>
+   </item>
+   <item row="3" column="10">
+    <widget class="QSpinBox" name="spinBox_108"/>
+   </item>
+   <item row="2" column="4">
+    <widget class="QSpinBox" name="spinBox_109"/>
+   </item>
+   <item row="2" column="5">
+    <widget class="QSpinBox" name="spinBox_110"/>
+   </item>
+   <item row="2" column="6">
+    <widget class="QSpinBox" name="spinBox_111"/>
+   </item>
+   <item row="2" column="7">
+    <widget class="QSpinBox" name="spinBox_112"/>
+   </item>
+   <item row="2" column="8">
+    <widget class="QSpinBox" name="spinBox_113"/>
+   </item>
+   <item row="2" column="9">
+    <widget class="QSpinBox" name="spinBox_114"/>
+   </item>
+   <item row="2" column="10">
+    <widget class="QSpinBox" name="spinBox_115"/>
+   </item>
+   <item row="1" column="5">
+    <widget class="QSpinBox" name="spinBox_116"/>
+   </item>
+   <item row="1" column="6">
+    <widget class="QSpinBox" name="spinBox_117"/>
+   </item>
+   <item row="1" column="7">
+    <widget class="QSpinBox" name="spinBox_118"/>
+   </item>
+   <item row="1" column="8">
+    <widget class="QSpinBox" name="spinBox_119"/>
+   </item>
+   <item row="1" column="9">
+    <widget class="QSpinBox" name="spinBox_120"/>
+   </item>
+   <item row="1" column="10">
+    <widget class="QSpinBox" name="spinBox_121"/>
+   </item>
+   <item row="9" column="7">
+    <widget class="QSpinBox" name="spinBox_80"/>
+   </item>
+   <item row="9" column="6">
+    <widget class="QSpinBox" name="spinBox_79"/>
+   </item>
+   <item row="9" column="5">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QSpinBox" name="spinBox_81">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>-10</y>
+        <width>39</width>
+        <height>25</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
