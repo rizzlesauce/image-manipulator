@@ -265,3 +265,23 @@ void ImageWindow::on_actionUnsharp_Mask_triggered() {
 	UnsharpMaskDialog *dialog = new UnsharpMaskDialog(this);
 	dialog->show();
 }
+
+void ImageWindow::on_actionSobelX_triggered() {
+	image.sobelX();
+	this->reloadPixmap();
+}
+
+void ImageWindow::on_actionSobelY_triggered() {
+	image.sobelY();
+	this->reloadPixmap();
+}
+
+void ImageWindow::on_actionLaplacian_triggered() {
+	image.laplacian();
+	reloadPixmap();
+}
+
+void ImageWindow::on_actionGradientMagnitude_triggered() {
+	image.gradientMagnitude();
+	reloadPixmap();
+}

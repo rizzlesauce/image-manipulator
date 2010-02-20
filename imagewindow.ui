@@ -72,11 +72,21 @@
     </property>
     <widget class="QMenu" name="menuApply_Filter">
      <property name="title">
-      <string>Apply Filter...</string>
+      <string>Apply Filter</string>
      </property>
+     <widget class="QMenu" name="menuSobel">
+      <property name="title">
+       <string>Sobel</string>
+      </property>
+      <addaction name="actionSobelX"/>
+      <addaction name="actionSobelY"/>
+     </widget>
      <addaction name="actionUniform_Average"/>
      <addaction name="actionMedian_Filter"/>
      <addaction name="actionUnsharp_Mask"/>
+     <addaction name="menuSobel"/>
+     <addaction name="actionLaplacian"/>
+     <addaction name="actionGradientMagnitude"/>
     </widget>
     <addaction name="actionClone"/>
     <addaction name="actionEqualize"/>
@@ -155,6 +165,26 @@
   <action name="actionUnsharp_Mask">
    <property name="text">
     <string>Unsharp Mask...</string>
+   </property>
+  </action>
+  <action name="actionSobelX">
+   <property name="text">
+    <string>X</string>
+   </property>
+  </action>
+  <action name="actionSobelY">
+   <property name="text">
+    <string>Y</string>
+   </property>
+  </action>
+  <action name="actionLaplacian">
+   <property name="text">
+    <string>Laplacian</string>
+   </property>
+  </action>
+  <action name="actionGradientMagnitude">
+   <property name="text">
+    <string>Gradient Magnitude</string>
    </property>
   </action>
  </widget>

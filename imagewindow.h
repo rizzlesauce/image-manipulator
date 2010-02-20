@@ -40,7 +40,10 @@ private slots:
     void on_actionUniform_Average_triggered();
     void on_actionMedian_Filter_triggered();
     void on_actionUnsharp_Mask_triggered();
-
+    void on_actionSobelX_triggered();
+    void on_actionSobelY_triggered();
+    void on_actionLaplacian_triggered();
+    void on_actionGradientMagnitude_triggered();
 };
 
 #endif // IMAGEWINDOW_H

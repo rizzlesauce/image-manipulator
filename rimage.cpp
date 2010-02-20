@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 #include <list>
+#include <cmath>
 using namespace std;
 
 RImage::RImage() : QImage()
@@ -60,47 +61,51 @@ void RImage::unsharpMask(int neighborhoodSize, int sharpeningLevel) {
  */
 void RImage::weightedFilter(vector<vector<int> > &weights) {
 
-	RImage original(*this);
+	int sumOfWeights = 0;
+	for (uint x = 0; x < weights.size(); ++x) {
+		for (uint y = 0; y < weights.size(); ++y) {
+			sumOfWeights += weights[x][y];
+		}
+	}
 
-	int filterSize = weights.size();
+	spatialFilterClip(weights, sumOfWeights);
+}
 
-	int sidesLength = filterSize / 2;
+void RImage::sobelX() {
+	vector<vector<int> > weights;
+	sobelXWeights(weights);
+	spatialFilterClip(weights, 8);
+}
+
+void RImage::sobelY() {
+	vector<vector<int> > weights;
+	sobelYWeights(weights);
+	spatialFilterClip(weights, 8);
+}
+
+void RImage::laplacian() {
+	vector<vector<int> > weights(3, vector<int>(3, 0));
+
+	weights[1][0] = 1;
+	weights[0][1] = 1;
+	weights[1][1] = -4;
+	weights[2][1] = 1;
+	weights[1][2] = 1;
+
+	spatialFilterScale(weights);
+}
+
+/**
+ * Filters must be of odd length or undefined behavior will result.
+ */
+void RImage::spatialFilterClip(vector<vector<int> > &weights, int divisor) {
+
+	vector<vector<int> > sumsOfValues(width(), vector<int>(height(), 0));
+	spatialFilter(weights, sumsOfValues);
 
 	for (int x = 0; x < width(); ++x) {
 		for (int y = 0; y < height(); ++y) {
-			// walk around the neighborhood
-			int x1 = x - sidesLength;
-			int x2 = x + sidesLength;
-			int y1 = y - sidesLength;
-			int y2 = y + sidesLength;
-
-			if (x1 < 0) {
-				x1 = 0;
-			}
-			if (x2 > width()) {
-				x2 = width();
-			}
-			if (y1 < 0) {
-				y1 = 0;
-			}
-			if (y2 > height()) {
-				y2 = height();
-			}
-
-			int sumOfWeights = 0;
-			int sumOfValues = 0;
-			for (int xx = x1; xx < x2; ++xx) {
-				for (int yy = y1; yy < y2; ++yy) {
-					int filterX = xx - x1;
-					int filterY = yy - y1;
-
-					sumOfWeights += weights[filterX][filterY];
-					int value = original.pixelIndex(xx, yy) * weights[filterX][filterY];
-					sumOfValues += value;
-				}
-			}
-
-			int value = floor((sumOfValues / sumOfWeights) + 0.5);
+			int value = sumsOfValues[x][y] / divisor;
 
 			if (value < 0) {
 				value = 0;
@@ -112,6 +117,124 @@ void RImage::weightedFilter(vector<vector<int> > &weights) {
 		}
 	}
 }
+
+/**
+ * Filters must be of odd length or undefined behavior will result.
+ */
+void RImage::spatialFilterScale(vector<vector<int> > &weights, int divisor) {
+
+	/*
+	int filterSize = weights.size();
+
+	int highestValue = 255;
+
+	// Get scaling info from weights and divisor
+	int positiveSum = 0;
+	int negativeSum = 0;
+	for (int x = 0; x < filterSize; ++x) {
+		for (int y = 0; y < filterSize; ++y) {
+			int weight = weights[x][y];
+			if (weight > 0) {
+				positiveSum += weight;
+			} else {
+				negativeSum += weight;
+			}
+		}
+	}
+	int highest = positiveSum * highestValue / divisor;
+	int lowest = negativeSum * highestValue / divisor;
+	int range = highest - lowest;
+
+	vector<vector<int> > sumsOfValues(width(), vector<int>(height(), 0));
+	spatialFilter(weights, sumsOfValues);
+
+	for (int x = 0; x < width(); ++x) {
+		for (int y = 0; y < height(); ++y) {
+			int value = (((sumsOfValues[x][y] / divisor) - lowest) / range) * highestValue;
+
+			setPixel(x, y, value);
+		}
+	}
+	*/
+
+	vector<vector<int> > sumsOfValues(width(), vector<int>(height(), 0));
+	spatialFilter(weights, sumsOfValues);
+
+	int highestValue = 255;
+	int highest = -50000000;
+	int lowest = 500000000;
+
+	for (int x = 0; x < width(); ++x) {
+		for (int y = 0; y < height(); ++y) {
+			int value = sumsOfValues[x][y] / divisor;
+			if (value > highest) {
+				highest = value;
+			}
+			if (value < lowest) {
+				lowest = value;
+			}
+		}
+	}
+	int range = highest - lowest;
+
+	for (int x = 0; x < width(); ++x) {
+		for (int y = 0; y < height(); ++y) {
+			int value = (((sumsOfValues[x][y] / divisor) - lowest) / range) * highestValue;
+			setPixel(x, y, value);
+		}
+	}
+}
+
+/**
+ * Filters must be of odd length or undefined behavior will result.
+ */
+void RImage::spatialFilter(vector<vector<int> > &weights, vector<vector<int> > &sumsOfValues) {
+
+	RImage original(*this);
+
+	int filterSize = weights.size();
+
+	int sidesLength = filterSize / 2;
+	for (int x = 0; x < width(); ++x) {
+		for (int y = 0; y < height(); ++y) {
+			// walk around the neighborhood
+			int x1 = x - sidesLength;
+			int x2 = x + sidesLength;
+			int y1 = y - sidesLength;
+			int y2 = y + sidesLength;
+
+			int sumOfValues = 0;
+			for (int xx = x1; xx <= x2; ++xx) {
+				int imgX = xx;
+
+				if (imgX < 0) {
+					imgX = 0;
+				} else if (imgX >= width()) {
+					imgX = width() - 1;
+				}
+
+				for (int yy = y1; yy <= y2; ++yy) {
+					int filterX = xx - x1;
+					int filterY = yy - y1;
+
+					int imgY = yy;
+
+					if (imgY < 0) {
+						imgY = 0;
+					} else if (imgY >= height()) {
+						imgY = height() - 1;
+					}
+
+					int value = original.pixelIndex(imgX, imgY) * weights[filterX][filterY];
+					sumOfValues += value;
+				}
+			}
+
+			sumsOfValues[x][y] = sumOfValues;
+		}
+	}
+}
+
 
 void RImage::equalize(vector<int> &table) {
     // equalize the histogram of the image
@@ -214,4 +337,67 @@ void RImage::medianFilter(int neighborhoodSize) {
 		}
 	}
 
+}
+
+void RImage::sobelXWeights(vector<vector<int> > &weights) {
+	weights.resize(3, vector<int>(3, 0));
+
+	weights[0][0] = -1;
+	weights[0][1] = -2;
+	weights[0][2] = -1;
+	weights[2][0] = 1;
+	weights[2][1] = 2;
+	weights[2][2] = 1;
+}
+
+void RImage::sobelYWeights(vector<vector<int> > &weights) {
+	weights.resize(3, vector<int>(3, 0));
+
+	weights[0][0] = -1;
+	weights[1][0] = -2;
+	weights[2][0] = -1;
+	weights[0][2] = 1;
+	weights[1][2] = 2;
+	weights[2][2] = 1;
+}
+
+void RImage::gradientMagnitude() {
+	vector<vector<int> > xChanges(width(), vector<int>(height()));
+	vector<vector<int> > yChanges(width(), vector<int>(height()));
+
+	vector<vector<int> > xWeights;
+	vector<vector<int> > yWeights;
+	sobelXWeights(xWeights);
+	sobelYWeights(yWeights);
+
+	spatialFilter(xWeights, xChanges);
+	spatialFilter(yWeights, yChanges);
+
+	vector<vector<double> > squareRoots(width(), vector<double>(height()));
+
+	double lowest = 5000000;
+	double highest = 0;
+	for (int x = 0; x < width(); ++x) {
+		for (int y = 0; y < height(); ++y) {
+			double sqroot = sqrt(pow(xChanges[x][y], 2) + pow(yChanges[x][y], 2));
+			squareRoots[x][y] = sqroot;
+
+			if (sqroot < lowest) {
+				lowest = sqroot;
+			}
+			if (sqroot > highest) {
+				highest = sqroot;
+			}
+		}
+	}
+	double range = highest - lowest;
+	int highestValue = 255;
+
+	for (int x = 0; x < width(); ++x) {
+		for (int y = 0; y < height(); ++y) {
+			int value = ((squareRoots[x][y] - lowest) / range) * highestValue;
+
+			setPixel(x, y, value);
+		}
+	}
 }
