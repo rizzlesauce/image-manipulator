@@ -63,7 +63,30 @@
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuDFT">
+    <property name="title">
+     <string>DFT</string>
+    </property>
+    <widget class="QMenu" name="menuPart_A">
+     <property name="title">
+      <string>Part A</string>
+     </property>
+     <addaction name="actionSine_wave"/>
+     <addaction name="actionCosine_wave"/>
+     <addaction name="actionSummed_sine_cosine"/>
+     <addaction name="actionSignal_from_file"/>
+    </widget>
+    <addaction name="menuPart_A"/>
+   </widget>
+   <widget class="QMenu" name="menuProject_6">
+    <property name="title">
+     <string>Project 6</string>
+    </property>
+    <addaction name="actionGenerate_sinusoid_image"/>
+   </widget>
    <addaction name="menuHi_Buddy"/>
+   <addaction name="menuDFT"/>
+   <addaction name="menuProject_6"/>
   </widget>
   <action name="actionOpen">
    <property name="text">
@@ -73,6 +96,31 @@
   <action name="actionQuit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionSine_wave">
+   <property name="text">
+    <string>sine wave</string>
+   </property>
+  </action>
+  <action name="actionCosine_wave">
+   <property name="text">
+    <string>cosine wave</string>
+   </property>
+  </action>
+  <action name="actionSummed_sine_cosine">
+   <property name="text">
+    <string>summed sine cosine</string>
+   </property>
+  </action>
+  <action name="actionSignal_from_file">
+   <property name="text">
+    <string>signal from file...</string>
+   </property>
+  </action>
+  <action name="actionGenerate_sinusoid_image">
+   <property name="text">
+    <string>Generate sinusoid image...</string>
    </property>
   </action>
  </widget>

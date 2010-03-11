@@ -4,7 +4,10 @@
 # QT += phonon
 TARGET = qt-project
 TEMPLATE = app
-SOURCES += customfilterdialog.cpp \
+SOURCES += addsinecosinedialog.cpp \
+    SampledChord.cpp \
+    SampledTone.cpp \
+    customfilterdialog.cpp \
     unsharpmaskdialog.cpp \
     medianfilterdialog.cpp \
     uniformaveragedialog.cpp \
@@ -17,7 +20,10 @@ SOURCES += customfilterdialog.cpp \
     gnuplot_i.cpp \
     FileLogger.cpp \
     Debugger.cpp
-HEADERS += customfilterdialog.h \
+HEADERS += addsinecosinedialog.h \
+    SampledChord.h \
+    SampledTone.h \
+    customfilterdialog.h \
     unsharpmaskdialog.h \
     medianfilterdialog.h \
     uniformaveragedialog.h \
@@ -28,10 +34,18 @@ HEADERS += customfilterdialog.h \
     Debugger.h \
     Utils.h \
     gnuplot_i.h
-FORMS += customfilterdialog.ui \
+FORMS += addsinecosinedialog.ui \
+    customfilterdialog.ui \
     unsharpmaskdialog.ui \
     medianfilterdialog.ui \
     uniformaveragedialog.ui \
     averageimagesdialog.ui \
     mainwindow.ui \
     imagewindow.ui
+
+# add external library links
+LIBS += -ljack \
+    -lpthread \
+    -lrt \
+    -lfftw3 \
+    -lm
