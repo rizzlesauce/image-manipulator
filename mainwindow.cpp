@@ -18,6 +18,7 @@
 #include "SampledTone.h"
 #include "gnuplot_i.h"
 #include "addsinecosinedialog.h"
+#include "generatesinusoidimagedialog.h"
 
 using namespace std;
 
@@ -59,7 +60,9 @@ void MainWindow::openFileChooser()
 }
 
 void MainWindow::on_actionGenerate_sinusoid_image_triggered() {
-
+    // create new window
+    GenerateSinusoidImageDialog* win = new GenerateSinusoidImageDialog(this);
+    win->show();
 }
 
 void MainWindow::on_actionSine_wave_triggered() {

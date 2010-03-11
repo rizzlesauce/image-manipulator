@@ -4,7 +4,8 @@
 # QT += phonon
 TARGET = qt-project
 TEMPLATE = app
-SOURCES += addsinecosinedialog.cpp \
+SOURCES += generatesinusoidimagedialog.cpp \
+    addsinecosinedialog.cpp \
     SampledChord.cpp \
     SampledTone.cpp \
     customfilterdialog.cpp \
@@ -20,7 +21,8 @@ SOURCES += addsinecosinedialog.cpp \
     gnuplot_i.cpp \
     FileLogger.cpp \
     Debugger.cpp
-HEADERS += addsinecosinedialog.h \
+HEADERS += generatesinusoidimagedialog.h \
+    addsinecosinedialog.h \
     SampledChord.h \
     SampledTone.h \
     customfilterdialog.h \
@@ -34,7 +36,8 @@ HEADERS += addsinecosinedialog.h \
     Debugger.h \
     Utils.h \
     gnuplot_i.h
-FORMS += addsinecosinedialog.ui \
+FORMS += generatesinusoidimagedialog.ui \
+    addsinecosinedialog.ui \
     customfilterdialog.ui \
     unsharpmaskdialog.ui \
     medianfilterdialog.ui \

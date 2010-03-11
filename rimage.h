@@ -12,7 +12,9 @@ class RImage : public QImage
 public:
     RImage();
     RImage(const QString&);
+    RImage(int width, int height, Format format);
 
+    void setGrayColorTable();
     void equalize();
     void equalize(vector<int> &table);
     void averageWithImages(vector<RImage> &images);

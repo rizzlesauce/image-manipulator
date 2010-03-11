@@ -7,6 +7,9 @@
 #include <vector>
 #include <list>
 #include <cmath>
+#include <QVector>
+#include <QRgb>
+#include <QColor>
 using namespace std;
 
 RImage::RImage() : QImage()
@@ -14,6 +17,18 @@ RImage::RImage() : QImage()
 }
 
 RImage::RImage(const QString& filename) : QImage(filename) {}
+
+RImage::RImage(int width, int height, Format format) : QImage(width, height, format) {}
+
+void RImage::setGrayColorTable() {
+	QVector<QRgb> table(256);
+
+	for (int i = 0; i < table.size(); ++i) {
+		table[i] = qRgb(i, i, i);
+	}
+
+	setColorTable(table);
+}
 
 void RImage::equalize() {
     vector<int> table;
