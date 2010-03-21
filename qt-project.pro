@@ -4,7 +4,8 @@
 # QT += phonon
 TARGET = qt-project
 TEMPLATE = app
-SOURCES += generatesinusoidimagedialog.cpp \
+SOURCES += FourierUtils.cpp \
+    generatesinusoidimagedialog.cpp \
     addsinecosinedialog.cpp \
     SampledChord.cpp \
     SampledTone.cpp \
@@ -21,7 +22,8 @@ SOURCES += generatesinusoidimagedialog.cpp \
     gnuplot_i.cpp \
     FileLogger.cpp \
     Debugger.cpp
-HEADERS += generatesinusoidimagedialog.h \
+HEADERS += FourierUtils.h \
+    generatesinusoidimagedialog.h \
     addsinecosinedialog.h \
     SampledChord.h \
     SampledTone.h \

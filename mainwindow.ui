@@ -84,9 +84,16 @@
     </property>
     <addaction name="actionGenerate_sinusoid_image"/>
    </widget>
+   <widget class="QMenu" name="menuProject_8">
+    <property name="title">
+     <string>Project 7</string>
+    </property>
+    <addaction name="action1D_Low_Pass"/>
+   </widget>
    <addaction name="menuHi_Buddy"/>
    <addaction name="menuDFT"/>
    <addaction name="menuProject_6"/>
+   <addaction name="menuProject_8"/>
   </widget>
   <action name="actionOpen">
    <property name="text">
@@ -121,6 +128,11 @@
   <action name="actionGenerate_sinusoid_image">
    <property name="text">
     <string>Generate sinusoid image...</string>
+   </property>
+  </action>
+  <action name="action1D_Low_Pass">
+   <property name="text">
+    <string>1D Low Pass</string>
    </property>
   </action>
  </widget>

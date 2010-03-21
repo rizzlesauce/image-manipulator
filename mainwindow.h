@@ -3,6 +3,7 @@
 
 #include <QtGui/QMainWindow>
 #include "rimage.h"
+#include <cmath>
 #include <fftw3.h>
 
 namespace Ui
@@ -19,6 +20,8 @@ public:
     ~MainWindow();
 
 	void transformAndPlotWave(vector<double>, string);
+	void lowPassFilter(vector<double>, string);
+	vector<double> butterworth1D(int size, double cutoff, double sharpness);
 
 public slots:
     void openFileChooser();
@@ -41,6 +44,7 @@ private slots:
 	void on_actionSummed_sine_cosine_triggered();
 	void on_actionSignal_from_file_triggered();
 	void on_actionGenerate_sinusoid_image_triggered();
+	void on_action1D_Low_Pass_triggered();
 };
 
 #endif // MAINWINDOW_H

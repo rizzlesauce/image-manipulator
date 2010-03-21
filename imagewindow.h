@@ -14,6 +14,7 @@ public:
     ImageWindow(QWidget *parent = 0);
     ~ImageWindow();
 
+	void transformAndPlotImage();
     void setImage(RImage& img);
     void createHistogram(bool display = true, string fileName = "");
     void plotEqualizationTable(bool display = true, string fileName = "");
@@ -44,6 +45,7 @@ private slots:
     void on_actionSobelY_triggered();
     void on_actionLaplacian_triggered();
     void on_actionGradientMagnitude_triggered();
+    void on_actionFourier_Transform_triggered();
 };
 
 #endif // IMAGEWINDOW_H

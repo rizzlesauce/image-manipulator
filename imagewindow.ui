@@ -95,6 +95,7 @@
     <addaction name="actionSave_Equalization_Table_Plot"/>
     <addaction name="actionAverage_With_Images"/>
     <addaction name="menuApply_Filter"/>
+    <addaction name="actionFourier_Transform"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuImage"/>
@@ -185,6 +186,11 @@
   <action name="actionGradientMagnitude">
    <property name="text">
     <string>Gradient Magnitude</string>
+   </property>
+  </action>
+  <action name="actionFourier_Transform">
+   <property name="text">
+    <string>Fourier Transform</string>
    </property>
   </action>
  </widget>

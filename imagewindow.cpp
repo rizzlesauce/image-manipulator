@@ -7,6 +7,8 @@
 #include "uniformaveragedialog.h"
 #include "medianfilterdialog.h"
 #include "unsharpmaskdialog.h"
+#include "FourierUtils.h"
+#include <fftw3.h>
 
 ImageWindow::ImageWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -285,3 +287,403 @@ void ImageWindow::on_actionGradientMagnitude_triggered() {
 	image.gradientMagnitude();
 	reloadPixmap();
 }
+
+void ImageWindow::on_actionFourier_Transform_triggered() {
+	transformAndPlotImage();
+}
+
+void ImageWindow::transformAndPlotImage() {
+
+	vector<double> xs, ys, zs;
+
+	string signalName = "myimage";
+	string style3d = "lines";
+	int samples3d = 10;
+
+	int width = image.width();
+	int height = image.height();
+
+	for (int x = 0; x < width; ++x) {
+		for (int y = 0; y < height; ++y) {
+			xs.push_back((double)x);
+			ys.push_back((double)y);
+		}
+	}
+
+	// don't use this
+	int size = width * height;
+
+	fftw_complex *in, *out;
+    fftw_plan p;
+    double min, max;
+
+    //int numValues = 256;
+    string imagePath;
+    bool display = true;
+
+    in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * size);
+    out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * size);
+    p = fftw_plan_dft_2d(width, height, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+
+    // display the wave
+    imagePath = signalName + "_original.eps";
+
+    // plot the wave
+    //min = -10;
+    //max = 10;
+    zs.clear();
+    min = max = 0.0;
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+    		double value = (double)image.pixelIndex(x, y);
+    		zs.push_back(value);
+
+    		FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, height)]);
+
+    		if (value < min) {
+    			min = value;
+    		}
+    		if (value > max) {
+    			max = value;
+    		}
+    	}
+    }
+
+    // create a new process
+    pid_t pId1 = fork();
+
+    if (pId1 == 0) {
+            // child process
+        try {
+
+            Gnuplot gplot;
+
+            if (!imagePath.empty()) {
+                gplot.save(imagePath);
+            }
+            gplot.set_style(style3d);
+            gplot.set_hidden3d();
+            //gplot.set_samples(samples3d);
+            gplot.set_isosamples(samples3d);
+            //gplot.set_ticslevel(0);
+            gplot.set_xrange(0, width);
+            gplot.set_xlabel("x");
+            gplot.set_yrange(0, height);
+            gplot.set_ylabel("y");
+            gplot.set_zrange(min, max);
+            gplot.set_zlabel("f(x, y)");
+            gplot.plot_xyz(xs, ys, zs);
+
+            if (display) {
+                gplot.showonscreen();
+                gplot.replot();
+
+                // wait for input
+                cin.clear();
+                cin.ignore(cin.rdbuf()->in_avail());
+                cin.get();
+            }
+
+            exit(0);
+        } catch (GnuplotException ge) {
+            cout << ge.what() << endl;
+            exit(1);
+        }
+    }
+
+    // calculate the fourier transform
+    fftw_execute(p);
+
+    /*
+
+    //min = -10;
+    //max = 10;
+    min = max = 0.0;
+    vector<vector<double>> real(width, vector<double>(height));
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+	    	FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, height)], real[x][y]);
+	    	if (real[x][y] < min) {
+	    		min = real[x][y];
+	    	}
+	    	if (real[x][y] > max) {
+	    		max = real[x][y];
+	    	}
+	    }
+    }
+
+    // display the real
+    imagePath = signalName + "_real.eps";
+
+    // create a new process
+    pid_t pId2 = fork();
+
+    if (pId2 == 0) {
+            // child process
+        try {
+
+            Gnuplot gplot;
+
+            if (!imagePath.empty()) {
+                gplot.save(imagePath);
+            }
+            gplot.set_style("lines");
+            //gplot.set_samples(300
+            gplot.set_xrange(0, numValues);
+            gplot.set_xlabel("t");
+            gplot.set_ylabel("real(F(t))");
+            gplot.set_yrange(min, max);
+            gplot.plot_x(real);
+
+            if (display) {
+                gplot.showonscreen();
+                gplot.replot();
+
+                // wait for input
+                cin.clear();
+                cin.ignore(cin.rdbuf()->in_avail());
+                cin.get();
+            }
+
+            exit(0);
+        } catch (GnuplotException ge) {
+            cout << ge.what() << endl;
+            exit(1);
+        }
+    }
+
+    // plot imaginary
+    //min = -10;
+    //max = 10;
+    min = max = 0.0;
+    vector<double> imaginary(numSamples);
+    for (int i = 0; i < numSamples; ++i) {
+    	FourierUtils::complexToImaginary(out[i], imaginary[i]);
+    	if (imaginary[i] < min) {
+    		min = imaginary[i];
+    	}
+    	if (imaginary[i] > max) {
+    		max = imaginary[i];
+    	}
+    }
+
+    // display the imaginary
+    imagePath = signalName + "_imaginary.eps";
+
+    // create a new process
+    pid_t pId3 = fork();
+
+    if (pId3 == 0) {
+            // child process
+        try {
+
+            Gnuplot gplot;
+
+            if (!imagePath.empty()) {
+                gplot.save(imagePath);
+            }
+            gplot.set_style("lines");
+            //gplot.set_samples(300
+            gplot.set_xrange(0, numValues);
+            gplot.set_xlabel("t");
+            gplot.set_ylabel("imaginary(F(t))");
+            gplot.set_yrange(min, max);
+            gplot.plot_x(imaginary);
+
+            if (display) {
+                gplot.showonscreen();
+                gplot.replot();
+
+                // wait for input
+                cin.clear();
+                cin.ignore(cin.rdbuf()->in_avail());
+                cin.get();
+            }
+
+            exit(0);
+        } catch (GnuplotException ge) {
+            cout << ge.what() << endl;
+            exit(1);
+        }
+    }
+
+    // plot magnitude
+    //min = -10;
+    //max = 10;
+    min = max = 0.0;
+    vector<double> magnitude(numSamples);
+    for (int i = 0; i < numSamples; ++i) {
+    	FourierUtils::complexToMagnitude(out[i], magnitude[i]);
+    	if (magnitude[i] < min) {
+    		min = magnitude[i];
+    	}
+    	if (magnitude[i] > max) {
+    		max = magnitude[i];
+    	}
+    }
+
+    // display the magnitude
+    imagePath = signalName + "_magnitude.eps";
+
+    // create a new process
+    pid_t pId4 = fork();
+
+    if (pId4 == 0) {
+            // child process
+        try {
+
+            Gnuplot gplot;
+
+            if (!imagePath.empty()) {
+                gplot.save(imagePath);
+            }
+            gplot.set_style("lines");
+            //gplot.set_samples(300
+            gplot.set_xrange(0, numValues);
+            gplot.set_xlabel("t");
+            gplot.set_ylabel("magnitude(F(t))");
+            gplot.set_yrange(min, max);
+            gplot.plot_x(magnitude);
+
+            if (display) {
+                gplot.showonscreen();
+                gplot.replot();
+
+                // wait for input
+                cin.clear();
+                cin.ignore(cin.rdbuf()->in_avail());
+                cin.get();
+            }
+
+            exit(0);
+        } catch (GnuplotException ge) {
+            cout << ge.what() << endl;
+            exit(1);
+        }
+    }
+
+    // plot phase
+    //min = -10;
+    //max = 10;
+    min = max = 0.0;
+    vector<double> phase(numSamples);
+    for (int i = 0; i < numSamples; ++i) {
+    	FourierUtils::complexToPhase(out[i], phase[i]);
+    	if (phase[i] < min) {
+    		min = phase[i];
+    	}
+    	if (phase[i] > max) {
+    		max = phase[i];
+    	}
+    }
+
+    // display the phase
+    imagePath = signalName + "_phase.eps";
+
+    // create a new process
+    pid_t pId5 = fork();
+
+    if (pId5 == 0) {
+            // child process
+        try {
+
+            Gnuplot gplot;
+
+            if (!imagePath.empty()) {
+                gplot.save(imagePath);
+            }
+            gplot.set_style("lines");
+            //gplot.set_samples(300
+            gplot.set_xrange(0, numValues);
+            gplot.set_xlabel("t");
+            gplot.set_ylabel("phase(F(t))");
+            gplot.set_yrange(min, max);
+            gplot.plot_x(phase);
+
+            if (display) {
+                gplot.showonscreen();
+                gplot.replot();
+
+                // wait for input
+                cin.clear();
+                cin.ignore(cin.rdbuf()->in_avail());
+                cin.get();
+            }
+
+            exit(0);
+        } catch (GnuplotException ge) {
+            cout << ge.what() << endl;
+            exit(1);
+        }
+    }
+    */
+
+    // plot power
+    //min = -10;
+    //max = 10;
+    min = max = 0.0;
+    zs.clear();
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+    		double power;
+	    	FourierUtils::complexToPower(out[FFTW_INDEX2D(x, y, height)], power);
+	    	zs.push_back(power);
+	    	if (power < min) {
+	    		min = power;
+	    	}
+	    	if (power > max) {
+	    		max = power;
+	    	}
+    	}
+    }
+
+    // display the power
+    imagePath = signalName + "_power.eps";
+
+    // create a new process
+    pid_t pId6 = fork();
+
+    if (pId6 == 0) {
+            // child process
+        try {
+
+            Gnuplot gplot;
+
+            if (!imagePath.empty()) {
+                gplot.save(imagePath);
+            }
+            gplot.set_style(style3d);
+            gplot.set_hidden3d();
+            //gplot.set_samples(samples3d);
+            gplot.set_isosamples(samples3d);
+            //gplot.set_ticslevel(0);
+            gplot.set_xrange(0, width);
+            gplot.set_xlabel("x");
+            gplot.set_yrange(0, height);
+            gplot.set_ylabel("y");
+            gplot.set_zrange(min, max);
+            gplot.set_zlabel("power(F(u))");
+            gplot.plot_xyz(xs, ys, zs);
+
+            if (display) {
+                gplot.showonscreen();
+                gplot.replot();
+
+                // wait for input
+                cin.clear();
+                cin.ignore(cin.rdbuf()->in_avail());
+                cin.get();
+            }
+
+            exit(0);
+        } catch (GnuplotException ge) {
+            cout << ge.what() << endl;
+            exit(1);
+        }
+    }
+
+    fftw_destroy_plan(p);
+    fftw_free(in);
+    fftw_free(out);
+}
+
