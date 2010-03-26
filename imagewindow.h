@@ -3,6 +3,7 @@
 
 #include <QtGui/QMainWindow>
 #include "rimage.h"
+#include <cmath>
 
 namespace Ui {
     class ImageWindow;
@@ -46,6 +47,9 @@ private slots:
     void on_actionLaplacian_triggered();
     void on_actionGradientMagnitude_triggered();
     void on_actionFourier_Transform_triggered();
+    void on_actionRemove_Interference_triggered();
+    void on_actionReverse_Fourier_Transform_triggered();
+	void on_actionUniform_Average_Frequency_triggered();
 };
 
 #endif // IMAGEWINDOW_H

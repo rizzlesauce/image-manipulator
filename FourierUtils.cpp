@@ -52,8 +52,18 @@ void FourierUtils::normalize1DSignal(fftw_complex* signal, fftw_complex* normali
     }
 }
 
+void FourierUtils::complexToRealImaginary(fftw_complex& complex, double& real, double& imaginary) {
+	complexToReal(complex, real);
+	complexToImaginary(complex, imaginary);
+}
+
 void FourierUtils::complexToImaginary(fftw_complex& complex, double& imaginary) {
 	imaginary = complex[1];
+}
+
+void FourierUtils::copyComplex(fftw_complex& original, fftw_complex& copy) {
+	copy[0] = original[0];
+	copy[1] = original[1];
 }
 
 void FourierUtils::realToComplex(double& real, fftw_complex& complex) {
@@ -74,6 +84,19 @@ void FourierUtils::realTimesComplex(double& real, fftw_complex& complex, fftw_co
 	imaginaryPart = real * imaginaryPart;
 
 	realImaginaryToComplex(realPart, imaginaryPart, result);
+}
+
+void FourierUtils::complexTimesComplex(fftw_complex& first, fftw_complex& second, fftw_complex& result) {
+	double x, y, u, v, s, t;
+	complexToReal(first, x);
+	complexToImaginary(first, y);
+	complexToReal(second, u);
+	complexToReal(second, v);
+
+	s = x * u - y * v;
+	t = x * v + y * u;
+
+	realImaginaryToComplex(s, t, result);
 }
 
 void FourierUtils::imaginaryToComplex(double& imaginary, fftw_complex& complex) {

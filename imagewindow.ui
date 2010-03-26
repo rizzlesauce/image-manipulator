@@ -88,6 +88,12 @@
      <addaction name="actionLaplacian"/>
      <addaction name="actionGradientMagnitude"/>
     </widget>
+    <widget class="QMenu" name="menuFrequency_Filter">
+     <property name="title">
+      <string>Frequency Filter</string>
+     </property>
+     <addaction name="actionUniform_Average_Frequency"/>
+    </widget>
     <addaction name="actionClone"/>
     <addaction name="actionEqualize"/>
     <addaction name="actionShow_Histogram"/>
@@ -96,6 +102,9 @@
     <addaction name="actionAverage_With_Images"/>
     <addaction name="menuApply_Filter"/>
     <addaction name="actionFourier_Transform"/>
+    <addaction name="actionReverse_Fourier_Transform"/>
+    <addaction name="actionRemove_Interference"/>
+    <addaction name="menuFrequency_Filter"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuImage"/>
@@ -191,6 +200,21 @@
   <action name="actionFourier_Transform">
    <property name="text">
     <string>Fourier Transform</string>
+   </property>
+  </action>
+  <action name="actionRemove_Interference">
+   <property name="text">
+    <string>Remove Interference</string>
+   </property>
+  </action>
+  <action name="actionReverse_Fourier_Transform">
+   <property name="text">
+    <string>Reverse Fourier Transform</string>
+   </property>
+  </action>
+  <action name="actionUniform_Average_Frequency">
+   <property name="text">
+    <string>Uniform Average 9x9</string>
    </property>
   </action>
  </widget>

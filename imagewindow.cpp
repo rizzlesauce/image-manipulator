@@ -1,3 +1,4 @@
+#include <cstring>
 #include "imagewindow.h"
 #include "ui_imagewindow.h"
 #include "averageimagesdialog.h"
@@ -298,7 +299,7 @@ void ImageWindow::transformAndPlotImage() {
 
 	string signalName = "myimage";
 	string style3d = "lines";
-	int samples3d = 10;
+	//int samples3d = 10;
 
 	int width = image.width();
 	int height = image.height();
@@ -310,21 +311,21 @@ void ImageWindow::transformAndPlotImage() {
 		}
 	}
 
-	// don't use this
 	int size = width * height;
 
 	fftw_complex *in, *out;
     fftw_plan p;
     double min, max;
 
-    //int numValues = 256;
+    int numValues = 256;
     string imagePath;
-    bool display = true;
+    //bool display = true;
 
     in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * size);
     out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * size);
     p = fftw_plan_dft_2d(width, height, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
 
+    /*
     // display the wave
     imagePath = signalName + "_original.eps";
 
@@ -390,12 +391,70 @@ void ImageWindow::transformAndPlotImage() {
             exit(1);
         }
     }
+    */
+
+    // set the input signal
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+    		double value = (double)image.pixelIndex(x, y);
+    		FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, height)]);
+    	}
+    }
 
     // calculate the fourier transform
     fftw_execute(p);
+    FourierUtils::normalize1DSignal(out, out, size);
+
+    // create a magnitude representation image
+    //min = -10;
+    //max = 10;
+    bool minSet = false;
+    bool maxSet = false;
+    vector<vector<double> > magnitude(width, vector<double>(height));
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+	    	FourierUtils::complexToMagnitude(out[FFTW_INDEX2D(x, y, height)], magnitude[x][y]);
+	    	if (magnitude[x][y] < min || !minSet) {
+	    		minSet = true;
+	    		min = magnitude[x][y];
+	    	}
+	    	if (magnitude[x][y] > max || !maxSet) {
+	    		maxSet = true;
+	    		max = magnitude[x][y];
+	    	}
+    	}
+    }
+
+    stringstream ss;
+    ss << "min: " << min << "\n";
+    ss << "max: " << max << "\n";
+    Debugger::getInstance().print(ss.str());
+
+    double magRange = max - min;
+    double magScale;
+    if (magRange == 0.0) {
+    	magScale = 0.0;
+    } else {
+    	magScale = (double)(numValues - 1) / magRange;
+    }
+
+    // create the image
+    ImageWindow *newWindow = new ImageWindow(parentWidget());
+
+	RImage magImage(width, height, QImage::Format_Indexed8);
+	magImage.setGrayColorTable();
+
+	for (int x = 0; x < width; ++x) {
+		for (int y = 0; y < height; ++y) {
+			int value = floor((magnitude[x][y] - min) * magScale);
+			magImage.setPixel(x, y, value);
+		}
+	}
+
+    newWindow->setImage(magImage);
+    newWindow->show();
 
     /*
-
     //min = -10;
     //max = 10;
     min = max = 0.0;
@@ -616,7 +675,6 @@ void ImageWindow::transformAndPlotImage() {
             exit(1);
         }
     }
-    */
 
     // plot power
     //min = -10;
@@ -681,9 +739,395 @@ void ImageWindow::transformAndPlotImage() {
             exit(1);
         }
     }
+    */
 
     fftw_destroy_plan(p);
     fftw_free(in);
     fftw_free(out);
 }
 
+void ImageWindow::on_actionReverse_Fourier_Transform_triggered() {
+
+	int width = image.width();
+	int height = image.height();
+
+	int size = width * height;
+
+	fftw_complex *in, *out;
+    fftw_plan p;
+    double min, max;
+
+    int numValues = 256;
+    string imagePath;
+    //bool display = true;
+
+    in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * size);
+    out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * size);
+    p = fftw_plan_dft_2d(width, height, in, out, FFTW_BACKWARD, FFTW_ESTIMATE);
+
+    // set the input signal
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+    		double value = (double)image.pixelIndex(x, y);
+    		FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, height)]);
+    	}
+    }
+
+    FourierUtils::normalize1DSignal(out, out, size);
+
+    // calculate the fourier transform
+    fftw_execute(p);
+
+    // reconstruct the image
+    bool minSet = false;
+    bool maxSet = false;
+    vector<vector<double> > reals(width, vector<double>(height));
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+	    	FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, height)], reals[x][y]);
+	    	if (reals[x][y] < min || !minSet) {
+	    		minSet = true;
+	    		min = reals[x][y];
+	    	}
+	    	if (reals[x][y] > max || !maxSet) {
+	    		maxSet = true;
+	    		max = reals[x][y];
+	    	}
+    	}
+    }
+
+    stringstream ss;
+    ss << "min: " << min << "\n";
+    ss << "max: " << max << "\n";
+    Debugger::getInstance().print(ss.str());
+
+    double realsRange = max - min;
+    double realsScale;
+    if (realsRange == 0.0) {
+    	realsScale = 0.0;
+    } else {
+    	realsScale = (double)(numValues - 1) / realsRange;
+    }
+
+    // create the image
+    ImageWindow *newWindow = new ImageWindow(parentWidget());
+
+	RImage realsImage(width, height, QImage::Format_Indexed8);
+	realsImage.setGrayColorTable();
+
+	for (int x = 0; x < width; ++x) {
+		for (int y = 0; y < height; ++y) {
+			int value = floor((reals[x][y] - min) * realsScale);
+			realsImage.setPixel(x, y, value);
+		}
+	}
+
+    newWindow->setImage(realsImage);
+    newWindow->show();
+
+    fftw_destroy_plan(p);
+    fftw_free(in);
+    fftw_free(out);
+}
+
+void ImageWindow::on_actionUniform_Average_Frequency_triggered() {
+	int width = image.width();
+	int height = image.height();
+
+	int kernelSize = 3;
+
+	int paddedWidth = width + kernelSize - 1;
+	int paddedHeight = height + kernelSize - 1;
+	int paddedSize = paddedWidth * paddedHeight;
+
+	// calculate the spatial kernel
+	// uniform average 9x9
+	//vector<vector<double> > kernel(kernelSize, vector<double>(kernelSize, 1.0 / (double)(kernelSize << 1)));
+	vector<vector<double> > kernel(kernelSize, vector<double>(kernelSize, 1.0));
+
+	// "center" the filter in the signal
+	vector<vector<double> > filter(paddedWidth, vector<double>(paddedHeight, 0.0));
+
+	int offset = kernelSize / 2;
+
+	for (int x = 0; x < kernelSize; ++x) {
+		for (int y = 0; y < kernelSize; ++y) {
+			int relX = x - offset;
+			int relY = y - offset;
+
+			int actualX, actualY;
+
+			if (relX < 0) {
+				actualX = paddedWidth + relX;
+			} else {
+				actualX = relX;
+			}
+
+			if (relY < 0) {
+				actualY = paddedHeight + relY;
+			} else {
+				actualY = relY;
+			}
+
+			filter[actualX][actualY] = kernel[x][y];
+		}
+	}
+
+	// fourier transform the image and the kernel
+	fftw_complex *in, *out, *tmpBuffer;
+    fftw_plan forward, backward;
+    //int signalSize = width * height;
+    int signalSize = paddedSize;
+
+    in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * signalSize);
+    out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * signalSize);
+    tmpBuffer = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * signalSize);
+    forward = fftw_plan_dft_2d(paddedWidth, paddedHeight, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+    backward = fftw_plan_dft_2d(paddedWidth, paddedHeight, in, out, FFTW_BACKWARD, FFTW_ESTIMATE);
+
+    // zero out the input buffer
+    for (int i = 0; i < signalSize; ++i) {
+    	double val = 0.0;
+    	FourierUtils::justRealToComplex(val, in[i]);
+    }
+
+    // fill the input buffer with image signal
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+    		double value = (double)image.pixelIndex(x, y);
+    		FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, paddedHeight)]);
+    	}
+    }
+
+    // calculate the fourier transform of the image
+    fftw_execute(forward);
+    // normalize result before inverse transform
+    //FourierUtils::normalize1DSignal(out, out, signalSize);
+
+    // copy the output to temporary buffer
+    memcpy((void*)tmpBuffer, (void*)out, sizeof(fftw_complex) * signalSize);
+
+    // zero out the intput buffer
+    for (int i = 0; i < signalSize; ++i) {
+    	double val = 0.0;
+    	FourierUtils::justRealToComplex(val, in[i]);
+    }
+
+    // fill the input buffer with filter signal
+    for (int x = 0; x < paddedWidth; ++x) {
+    	for (int y = 0; y < paddedHeight; ++y) {
+    		double value = filter[x][y];
+    		FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, paddedHeight)]);
+    	}
+    }
+
+    // calculate the fourier transform of the filter
+    fftw_execute(forward);
+    // normalize result before inverse transform
+    //FourierUtils::normalize1DSignal(out, out, signalSize);
+
+    // f(x, y) real and even <=> F(u, v) real and even
+
+    /*
+    // zero out the real part of H(u)
+    for (int i = 0; i < signalSize; ++i) {
+    	double val = 0.0;
+		FourierUtils::realToComplex(val, out[i]);
+    }
+    */
+
+    // perform the array multiplication of the transforms
+    for (int x = 0; x < paddedWidth; ++x) {
+    	for (int y = 0; y < paddedHeight; ++y) {
+    		double real;
+    		FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, paddedHeight)], real);
+    		FourierUtils::realTimesComplex(real, tmpBuffer[FFTW_INDEX2D(x, y, paddedHeight)],
+    				in[FFTW_INDEX2D(x, y, paddedHeight)]);
+    		/*
+    		FourierUtils::complexTimesComplex(tmpBuffer[FFTW_INDEX2D(x, y, paddedHeight)],
+    				out[FFTW_INDEX2D(x, y, paddedHeight)],
+    				in[FFTW_INDEX2D(x, y, paddedHeight)]);
+    				*/
+    	}
+    }
+
+    // inverse transform
+    fftw_execute(backward);
+    // normalize result after backward inverse
+    FourierUtils::normalize1DSignal(out, out, signalSize);
+
+    // construct image from inverse transform
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+    		double value;
+    		FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, paddedHeight)], value);
+
+    		if (value < 0.0) {
+    			value = 0.0;
+    		} else if (value > 255.0) {
+    			value = 255.0;
+    		}
+
+    		image.setPixel(x, y, (int)value);
+    	}
+    }
+
+    // refresh image
+    reloadPixmap();
+
+    // free memory
+    fftw_destroy_plan(forward);
+    fftw_destroy_plan(backward);
+    fftw_free(in);
+    fftw_free(out);
+    fftw_free(tmpBuffer);
+}
+
+void ImageWindow::on_actionRemove_Interference_triggered() {
+	int width = image.width();
+	int height = image.height();
+	int signalSize = width * height;
+	fftw_complex *in, *out;
+    fftw_plan forward, backward;
+    //double min, max;
+
+    //int numValues = signalSize;
+    //string imagePath;
+    //bool display = true;
+
+    in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * signalSize);
+    out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * signalSize);
+    forward = fftw_plan_dft_1d(signalSize, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+    backward = fftw_plan_dft_1d(signalSize, in, out, FFTW_BACKWARD, FFTW_ESTIMATE);
+
+    // fill the input buffer
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+    		double value = (double)image.pixelIndex(x, y);
+    		FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, height)]);
+    	}
+    }
+
+    // calculate the fourier transform
+    fftw_execute(forward);
+
+    // normalize result and copy back to input buffer
+    FourierUtils::normalize1DSignal(out, out, signalSize);
+
+    // deal with the wayward frequencies
+    //double newMagnitude = 0.0;
+    //FourierUtils::realToComplex(newMagnitude, in[0]);
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+    		fftw_complex top, bottom, left, right;
+    		double r_top, r_bottom, r_left, r_right, r_average;
+    		double i_top, i_bottom, i_left, i_right, i_average;
+
+    		if (y == 0) {
+    			FourierUtils::copyComplex(out[FFTW_INDEX2D(x, y, height)], top);
+    		} else {
+    			FourierUtils::copyComplex(out[FFTW_INDEX2D(x, y - 1, height)], top);
+    		}
+    		if (y == height - 1) {
+    			FourierUtils::copyComplex(out[FFTW_INDEX2D(x, y, height)], bottom);
+    		} else {
+    			FourierUtils::copyComplex(out[FFTW_INDEX2D(x, y + 1, height)], bottom);
+    		}
+    		if (x == 0) {
+    			FourierUtils::copyComplex(out[FFTW_INDEX2D(x, y, height)], left);
+    		} else {
+    			FourierUtils::copyComplex(out[FFTW_INDEX2D(x - 1, y, height)], left);
+    		}
+    		if (x == width - 1) {
+    			FourierUtils::copyComplex(out[FFTW_INDEX2D(x, y, height)], right);
+    		} else {
+    			FourierUtils::copyComplex(out[FFTW_INDEX2D(x + 1, y, height)], right);
+    		}
+
+    		FourierUtils::complexToRealImaginary(top, r_top, i_top);
+    		FourierUtils::complexToRealImaginary(bottom, r_bottom, i_bottom);
+    		FourierUtils::complexToRealImaginary(left, r_left, i_left);
+    		FourierUtils::complexToRealImaginary(right, r_right, i_right);
+
+    		r_average = (r_top + r_bottom + r_left + r_right) / 4.0;
+    		i_average = (i_top + i_bottom + i_left + i_right) / 4.0;
+
+    		FourierUtils::realImaginaryToComplex(r_average, i_average, in[FFTW_INDEX2D(x, y, height)]);
+    	}
+    }
+    int numValues = 256;
+    double max, min;
+    // create a magnitude representation image
+    //min = -10;
+    //max = 10;
+    bool minSet = false;
+    bool maxSet = false;
+    vector<vector<double> > magnitude(width, vector<double>(height));
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+	    	FourierUtils::complexToMagnitude(out[FFTW_INDEX2D(x, y, height)], magnitude[x][y]);
+	    	if (magnitude[x][y] < min || !minSet) {
+	    		minSet = true;
+	    		min = magnitude[x][y];
+	    	}
+	    	if (magnitude[x][y] > max || !maxSet) {
+	    		maxSet = true;
+	    		max = magnitude[x][y];
+	    	}
+    	}
+    }
+
+    stringstream ss;
+    ss << "min: " << min << "\n";
+    ss << "max: " << max << "\n";
+    Debugger::getInstance().print(ss.str());
+
+    double magRange = max - min;
+    double magScale;
+    if (magRange == 0.0) {
+    	magScale = 0.0;
+    } else {
+    	magScale = (double)(numValues - 1) / magRange;
+    }
+
+    // create the image
+    ImageWindow *newWindow = new ImageWindow(parentWidget());
+
+	RImage magImage(width, height, QImage::Format_Indexed8);
+	magImage.setGrayColorTable();
+
+	for (int x = 0; x < width; ++x) {
+		for (int y = 0; y < height; ++y) {
+			int value = floor((magnitude[x][y] - min) * magScale);
+			magImage.setPixel(x, y, value);
+		}
+	}
+
+    newWindow->setImage(magImage);
+    newWindow->show();
+
+
+    // inverse fourier transform
+    fftw_execute(backward);
+
+    // set the pixels
+    for (int x = 0; x < width; ++x) {
+    	for (int y = 0; y < height; ++y) {
+    		double value;
+    		FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, height)], value);
+    		if (value < 0.0) {
+    			value = 0.0;
+    		}
+    		if (value > 255.0) {
+    			value = 255.0;
+    		}
+    		image.setPixel(x, y, (int)value);
+    	}
+    }
+    reloadPixmap();
+
+    fftw_destroy_plan(forward);
+    fftw_destroy_plan(backward);
+    fftw_free(in);
+    fftw_free(out);
+}

@@ -578,7 +578,7 @@ void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
     FourierUtils::normalize1DSignal(out, out, numSamples);
 
     vector<double> lowPass;
-    lowPass = butterworth1D(numSamples, (int)(numSamples / 2), 2.0);
+    lowPass = butterworth1D(numSamples, (double)numSamples / 6.0, 2.0);
 
     // plot low pass filter
     min = max = 0.0;
