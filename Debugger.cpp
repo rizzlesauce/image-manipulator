@@ -29,9 +29,10 @@ void
 Debugger::print(string message) {
     if (enabled_) {
         /*
-        cout << message;
-		fflush(stdout);
-                */
+         cout << message;
+		 fflush(stdout);
+		 */
+
         emit messagePrinted(QString(message.c_str()));
     }
 }

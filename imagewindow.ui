@@ -94,6 +94,12 @@
      </property>
      <addaction name="actionUniform_Average_Frequency"/>
     </widget>
+    <widget class="QMenu" name="menuCs478_Chess">
+     <property name="title">
+      <string>cs478 Chess</string>
+     </property>
+     <addaction name="actionCrop_and_Resize"/>
+    </widget>
     <addaction name="actionClone"/>
     <addaction name="actionEqualize"/>
     <addaction name="actionShow_Histogram"/>
@@ -105,9 +111,17 @@
     <addaction name="actionReverse_Fourier_Transform"/>
     <addaction name="actionRemove_Interference"/>
     <addaction name="menuFrequency_Filter"/>
+    <addaction name="menuCs478_Chess"/>
+   </widget>
+   <widget class="QMenu" name="menuColor">
+    <property name="title">
+     <string>Color</string>
+    </property>
+    <addaction name="actionColor_Equalize"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuImage"/>
+   <addaction name="menuColor"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="sizePolicy">
@@ -215,6 +229,16 @@
   <action name="actionUniform_Average_Frequency">
    <property name="text">
     <string>Uniform Average 9x9</string>
+   </property>
+  </action>
+  <action name="actionCrop_and_Resize">
+   <property name="text">
+    <string>Crop and Resize</string>
+   </property>
+  </action>
+  <action name="actionColor_Equalize">
+   <property name="text">
+    <string>Equalize</string>
    </property>
   </action>
  </widget>

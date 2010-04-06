@@ -9,6 +9,7 @@
 #define SAMPLEDTONE_H_
 
 #define SAMPLEDTONE_PI 3.14159265f
+#define PRACTICALLY_ZERO(d) (d < 0.0000000001 && d > -0.0000000001)
 
 #include <jack/jack.h>
 

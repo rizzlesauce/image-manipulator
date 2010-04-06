@@ -43,20 +43,22 @@ MainWindow::~MainWindow()
 void MainWindow::openFileChooser()
 {
 
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "./",
-        tr("Image Files (*.png *.ppm *.pgm *.jpg *.bmp)"));
+    QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Image"), "./",
+        tr("Image Files (*.png *.ppm *.pgm *.jpg *.JPG *.bmp)"));
 
-    if (fileName == NULL) {
+    if (fileNames.size() == 0) {
             // no file chosen
     } else {
-            // file chosen
-        //setImage(new RImage(fileName));
-        RImage img(fileName);
+    	for (int i = 0; i < fileNames.size(); ++i) {
+	            // file chosen
+	        //setImage(new RImage(fileName));
+	        RImage img(fileNames.at(i));
 
-        // create new window
-        ImageWindow* win = new ImageWindow(this);
-        win->setImage(img);
-        win->show();
+	        // create new window
+	        ImageWindow* win = new ImageWindow(this);
+	        win->setImage(img);
+	        win->show();
+	    }
     }
 }
 

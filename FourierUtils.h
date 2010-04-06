@@ -9,7 +9,9 @@
 #define FOURIERUTILS_H_
 #include <fftw3.h>
 
-#define FFTW_INDEX2D(x, y, height) (y + height * x)
+#define FFTW_INDEX2D(x, y, height) ((int)y + (int)height * (int)x)
+#define FFTW_INDEX2D_X(i, height) ((int)i / (int)height)
+#define FFTW_INDEX2D_Y(i, height) ((int)i % (int)height)
 
 class FourierUtils {
 public:
