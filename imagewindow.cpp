@@ -1509,12 +1509,36 @@ void ImageWindow::on_actionColor_Equalize_triggered() {
 	win->show();
 	*/
 
+	// scale intensities
 	for (int x = 0; x < width; ++x) {
 		for (int y = 0; y < height; ++y) {
 			intensity = (double)intensityImage.pixelIndex(x, y) / 255.0;
 			intensities[x][y] = intensity;
 		}
 	}
+
+	// increase saturation
+	for (int x = 0; x < width; ++x) {
+		for (int y = 0; y < height; ++y) {
+			saturation = saturations[x][y];
+			saturation = saturation + 0.05;
+			if (saturation > 1.0) {
+				saturation = 1.0;
+			}
+			saturations[x][y] = saturation;
+		}
+	}
+
+	/*
+	// set hue (colorize)
+	for (int x = 0; x < width; ++x) {
+		for (int y = 0; y < height; ++y) {
+			//hue = hues[x][y];
+			hue = 2.0 * SAMPLEDTONE_PI / 3.0;
+			hues[x][y] = hue;
+		}
+	}
+	*/
 
 	// convert HSI to RGB
 	double *a, *b, *c;
