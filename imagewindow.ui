@@ -119,9 +119,17 @@
     </property>
     <addaction name="actionColor_Equalize"/>
    </widget>
+   <widget class="QMenu" name="menuCompression">
+    <property name="title">
+     <string>Compression</string>
+    </property>
+    <addaction name="actionPredictive_Encode"/>
+    <addaction name="actionPredictive_Decode"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuImage"/>
    <addaction name="menuColor"/>
+   <addaction name="menuCompression"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="sizePolicy">
@@ -239,6 +247,16 @@
   <action name="actionColor_Equalize">
    <property name="text">
     <string>Equalize</string>
+   </property>
+  </action>
+  <action name="actionPredictive_Encode">
+   <property name="text">
+    <string>Predictive Encode</string>
+   </property>
+  </action>
+  <action name="actionPredictive_Decode">
+   <property name="text">
+    <string>Predictive Decode</string>
    </property>
   </action>
  </widget>

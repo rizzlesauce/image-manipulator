@@ -30,6 +30,11 @@ public:
     void gradientMagnitude();
     void sobelXWeights(vector<vector<int> > &weights);
     void sobelYWeights(vector<vector<int> > &weights);
+    void predictiveEncode();
+    void predictiveDecode();
+    static int getPredictedValue(vector<vector<int> > &valuesSeenSoFar, int w, int h, int x, int y);
+    static int getCorrection(int, int);
+    static int correctPredicted(int, int);
 
     vector<int>& getHistogram(vector<int>& hist);
 };

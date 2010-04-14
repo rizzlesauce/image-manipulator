@@ -1609,3 +1609,12 @@ void ImageWindow::on_actionColor_Equalize_triggered() {
 	reloadPixmap();
 }
 
+void ImageWindow::on_actionPredictive_Encode_triggered() {
+	image.predictiveEncode();
+	reloadPixmap();
+}
+
+void ImageWindow::on_actionPredictive_Decode_triggered() {
+	image.predictiveDecode();
+	reloadPixmap();
+}

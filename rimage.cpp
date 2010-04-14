@@ -416,3 +416,136 @@ void RImage::gradientMagnitude() {
 		}
 	}
 }
+
+void RImage::predictiveEncode() {
+	//RImage encodedImage(width(), height(), QImage::Format_Indexed8);
+	//encodedImage.setGrayColorTable();
+
+	vector<vector<int> > valuesSeenSoFar(width(), vector<int>(height(), 0));
+
+	int predictedValue;
+	int actualValue;
+	int correction;
+
+	// for each pixel...
+	for (int y = 0; y < height(); ++y) {
+		for (int x = 0; x < width(); ++x) {
+
+			predictedValue = RImage::getPredictedValue(valuesSeenSoFar, width(), height(), x, y);
+
+			actualValue = pixelIndex(x, y);
+
+			// get the correction value
+			correction = RImage::getCorrection(predictedValue, actualValue);
+
+			// update values seen so far
+			valuesSeenSoFar[x][y] = actualValue;
+
+			// encode the value in this image
+			setPixel(x, y, correction);
+
+		}
+	}
+}
+
+void RImage::predictiveDecode() {
+
+	vector<vector<int> > valuesSeenSoFar(width(), vector<int>(height(), 0));
+
+	int predictedValue;
+	int actualValue;
+	int correction;
+
+	// for each pixel...
+	for (int y = 0; y < height(); ++y) {
+		for (int x = 0; x < width(); ++x) {
+
+			predictedValue = RImage::getPredictedValue(valuesSeenSoFar, width(), height(), x, y);
+
+			correction = pixelIndex(x, y);
+
+			actualValue = RImage::correctPredicted(predictedValue, correction);
+
+			// update values seen so far
+			valuesSeenSoFar[x][y] = actualValue;
+
+			// encode the value in this image
+			setPixel(x, y, actualValue);
+		}
+	}
+}
+
+
+
+
+int RImage::getCorrection(int predictedValue, int trueValue) {
+	int numLevels = 256;
+
+	int correction = predictedValue - trueValue;
+	if (correction < 0) {
+		correction += numLevels;
+	}
+
+	return correction;
+}
+
+int RImage::correctPredicted(int predictedValue, int correction) {
+	int numLevels = 256;
+
+	int trueValue = predictedValue - correction;
+	if (trueValue < 0) {
+		trueValue += numLevels;
+	}
+
+	return trueValue;
+}
+
+int RImage::getPredictedValue(vector<vector<int> > &valuesSeenSoFar, int w, int h, int x, int y) {
+
+	//int w = valuesSeenSoFar.size();
+	//int h = valuesSeenSoFar[0].size();
+
+	int numLevels = 256;
+
+	int neighborX[] = { -1, -1, 0, 1 };
+	int neighborY[] = { 0, -1, -1, -1 };
+	int neighborhoodSize = 4;
+
+	int tmpX, tmpY;
+	int averageValue;
+	int predictedValue;
+
+	vector<int> neighborValues;
+
+	// get the neighboring pixels
+	for (int i = 0; i < neighborhoodSize; ++i) {
+
+		tmpX = x + neighborX[i];
+		tmpY = y + neighborY[i];
+
+		if (tmpX < 0 || tmpX >= w) {
+				// out of range, don't use it
+		} else if (tmpY < 0 || tmpY >= h) {
+				// out of range, don't use it
+		} else {
+			neighborValues.push_back(valuesSeenSoFar[tmpX][tmpY]);
+		}
+	}
+
+	// predict the value
+
+	// get the average value from neighbors
+	averageValue = 0;
+	for (unsigned int i = 0; i < neighborValues.size(); ++i) {
+		averageValue += neighborValues[i];
+	}
+
+	if (neighborValues.size() == 0) {
+		// no neighbors, so use half the value range
+		predictedValue = (numLevels - 1) / 2;
+	} else {
+		predictedValue = averageValue / neighborValues.size();
+	}
+
+	return predictedValue;
+}
