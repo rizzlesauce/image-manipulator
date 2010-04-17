@@ -32,6 +32,12 @@ public:
     void sobelYWeights(vector<vector<int> > &weights);
     void predictiveEncode();
     void predictiveDecode();
+    RImage magnify(double factor);
+    RImage shrink(double factor);
+    RImage rotate(double degrees);
+    static double rotateX(double x, double y, double xc, double yc, double radians);
+    static double rotateY(double x, double y, double xc, double yc, double radians);
+    double bilinearInterpolateValue(double x, double y);
     static int getPredictedValue(vector<vector<int> > &valuesSeenSoFar, int w, int h, int x, int y);
     static int getCorrection(int, int);
     static int correctPredicted(int, int);

@@ -12,6 +12,9 @@
 #include "SampledTone.h"
 #include <fftw3.h>
 #include <algorithm>
+#include "magnifydialog.h"
+#include "shrinkdialog.h"
+#include "rotatedialog.h"
 
 ImageWindow::ImageWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -1617,4 +1620,19 @@ void ImageWindow::on_actionPredictive_Encode_triggered() {
 void ImageWindow::on_actionPredictive_Decode_triggered() {
 	image.predictiveDecode();
 	reloadPixmap();
+}
+
+void ImageWindow::on_actionMagnify_triggered() {
+	MagnifyDialog *dialog = new MagnifyDialog(this);
+	dialog->show();
+}
+
+void ImageWindow::on_actionShrink_triggered() {
+	ShrinkDialog *dialog = new ShrinkDialog(this);
+	dialog->show();
+}
+
+void ImageWindow::on_actionRotate_triggered() {
+	RotateDialog *dialog = new RotateDialog(this);
+	dialog->show();
 }

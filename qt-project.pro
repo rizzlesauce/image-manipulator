@@ -4,7 +4,10 @@
 # QT += phonon
 TARGET = qt-project
 TEMPLATE = app
-SOURCES += FourierUtils.cpp \
+SOURCES += rotatedialog.cpp \
+    shrinkdialog.cpp \
+    magnifydialog.cpp \
+    FourierUtils.cpp \
     generatesinusoidimagedialog.cpp \
     addsinecosinedialog.cpp \
     SampledChord.cpp \
@@ -22,7 +25,10 @@ SOURCES += FourierUtils.cpp \
     gnuplot_i.cpp \
     FileLogger.cpp \
     Debugger.cpp
-HEADERS += FourierUtils.h \
+HEADERS += rotatedialog.h \
+    shrinkdialog.h \
+    magnifydialog.h \
+    FourierUtils.h \
     generatesinusoidimagedialog.h \
     addsinecosinedialog.h \
     SampledChord.h \
@@ -38,7 +44,10 @@ HEADERS += FourierUtils.h \
     Debugger.h \
     Utils.h \
     gnuplot_i.h
-FORMS += generatesinusoidimagedialog.ui \
+FORMS += rotatedialog.ui \
+    shrinkdialog.ui \
+    magnifydialog.ui \
+    generatesinusoidimagedialog.ui \
     addsinecosinedialog.ui \
     customfilterdialog.ui \
     unsharpmaskdialog.ui \

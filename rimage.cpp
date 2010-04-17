@@ -10,6 +10,7 @@
 #include <QVector>
 #include <QRgb>
 #include <QColor>
+#include "SampledTone.h"
 using namespace std;
 
 RImage::RImage() : QImage()
@@ -500,6 +501,88 @@ int RImage::correctPredicted(int predictedValue, int correction) {
 	return trueValue;
 }
 
+RImage RImage::magnify(double factor) {
+	int newWidth = width() * factor;
+	int newHeight = height() * factor;
+
+	double backX, backY, value;
+
+	RImage newImage(newWidth, newHeight, QImage::Format_Indexed8);
+	newImage.setGrayColorTable();
+
+	for (int x = 0; x < newWidth; ++x) {
+		for (int y = 0; y < newHeight; ++y) {
+			// get the backward mapped point
+			backX = (double)x / factor;
+			backY = (double)y / factor;
+			value = bilinearInterpolateValue(backX, backY);
+			newImage.setPixel(x, y, (int)value);
+		}
+	}
+
+	return newImage;
+}
+
+RImage RImage::shrink(double factor) {
+	int newWidth = floor(((double)width() / factor) + 0.5);
+	int newHeight = floor(((double)height() / factor) + 0.5);
+
+	double backX, backY, value;
+
+	RImage newImage(newWidth, newHeight, QImage::Format_Indexed8);
+	newImage.setGrayColorTable();
+
+	for (int x = 0; x < newWidth; ++x) {
+		for (int y = 0; y < newHeight; ++y) {
+			// get the backward mapped point
+			backX = (double)x * factor;
+			backY = (double)y * factor;
+
+			if (backX >= width()) {
+				backX = width() - 1;
+			}
+			if (backY >= height()) {
+				backY = height() - 1;
+			}
+
+			value = (double)pixelIndex(backX, backY);
+			newImage.setPixel(x, y, (int)value);
+		}
+	}
+
+	return newImage;
+}
+
+double RImage::bilinearInterpolateValue(double x, double y) {
+	// find the square this fits inside
+	int x0 = floor(x);
+	int y0 = floor(y);
+	int x1 = x0 + 1;
+	int y1 = y0 + 1;
+	if (x1 >= width()) {
+		x1 = width() - 1;
+	}
+	if (y1 >= height()) {
+		y1 = height() - 1;
+	}
+
+	double value;
+
+	x = x - (double)x0;
+	y = y - (double)y0;
+
+	double v1, v2, v3, v4;
+
+	v1 = (double)pixelIndex(x0, y0);
+	v2 = (double)pixelIndex(x1, y0);
+	v3 = (double)pixelIndex(x0, y1);
+	v4 = (double)pixelIndex(x1, y1);
+
+	value = (v2 - v1) * x + (v3 - v1) * y + (v1 - v2 - v3 +v4) * x * y + v1;
+
+	return value;
+}
+
 int RImage::getPredictedValue(vector<vector<int> > &valuesSeenSoFar, int w, int h, int x, int y) {
 
 	//int w = valuesSeenSoFar.size();
@@ -548,4 +631,142 @@ int RImage::getPredictedValue(vector<vector<int> > &valuesSeenSoFar, int w, int 
 	}
 
 	return predictedValue;
+}
+
+double RImage::rotateX(double x, double y, double xc, double yc, double radians) {
+	return ((double)x - xc) * cos(radians) - ((double)y - yc) * sin(radians) + xc;
+}
+double RImage::rotateY(double x, double y, double xc, double yc, double radians) {
+	return ((double)x - xc) * sin(radians) + ((double)y - yc) * cos(radians) + yc;
+}
+
+RImage RImage::rotate(double degrees) {
+	double t = (degrees / 180.0) * (SAMPLEDTONE_PI);
+	double radians = t * -1.0;
+
+	// get the new dimensions
+	double xs[4];
+	double ys[4];
+	double xc = (double)width() / 2.0;
+	double yc = (double)height() / 2.0;
+
+	xs[0] = RImage::rotateX(0, 0, xc, yc, radians);
+	ys[0] = RImage::rotateY(0, 0, xc, yc, radians);
+	xs[1] = RImage::rotateX(0, height() - 1, xc, yc, radians);
+	ys[1] = RImage::rotateY(0, height() - 1, xc, yc, radians);
+	xs[2] = RImage::rotateX(width() - 1, height() - 1, xc, yc, radians);
+	ys[2] = RImage::rotateY(width() - 1, height() - 1, xc, yc, radians);
+	xs[3] = RImage::rotateX(width() - 1, 0, xc, yc, radians);
+	ys[3] = RImage::rotateY(width() - 1, 0, xc, yc, radians);
+
+	// get the mins and maxes
+	bool first = true;
+	double minX, maxX, minY, maxY;
+	for (int i = 0; i < 4; ++i) {
+		if (first) {
+			minX = xs[i];
+			maxX = xs[i];
+			minY = ys[i];
+			maxY = ys[i];
+			first = false;
+		} else {
+			if (xs[i] < minX) {
+				minX = xs[i];
+			}
+			if (xs[i] > maxX) {
+				maxX = xs[i];
+			}
+			if (ys[i] < minY) {
+				minY = ys[i];
+			}
+			if (ys[i] > maxY) {
+				maxY = ys[i];
+			}
+		}
+	}
+
+	RImage newImage(floor(maxX - minX + 0.5), floor(maxY - minY + 0.5), QImage::Format_Indexed8);
+	newImage.setGrayColorTable();
+
+	double backX, backY, value;
+	double xc2 = (double)newImage.width() / 2.0;
+	double yc2 = (double)newImage.height() / 2.0;
+
+	double xcDiff = xc2 - xc;
+	double ycDiff = yc2 - yc;
+
+	for (int x = 0; x < newImage.width(); ++x) {
+		for (int y = 0; y < newImage.height(); ++y) {
+			// get the backward mapped point
+			backX = RImage::rotateX(x, y, xc2, yc2, t) - xcDiff;
+			backY = RImage::rotateY(x, y, xc2, yc2, t) - ycDiff;
+
+			if (backX < 0 || backX >= width() || backY < 0 || backY >= height()) {
+					// don't know where it came from
+				value = 0.0;
+			} else {
+				value = bilinearInterpolateValue(backX, backY);
+			}
+			newImage.setPixel(x, y, (int)value);
+		}
+	}
+
+	int top, bottom, left, right;
+	// find the top
+	bool found = false;
+	for (int y = 0; y < newImage.height() && !found; ++y) {
+		for (int x = 0; x < newImage.width() && !found; ++x) {
+			if (newImage.pixelIndex(x, y) != 0) {
+				top = y;
+				found = true;
+			}
+		}
+	}
+
+	// find the bottom
+	found = false;
+	for (int y = newImage.height() - 1; y >= 0 && !found; --y) {
+		for (int x = newImage.width() - 1; x >= 0 && !found; --x) {
+			if (newImage.pixelIndex(x, y) != 0) {
+				bottom = y;
+				found = true;
+			}
+		}
+	}
+
+	// find the left
+	found = false;
+	for (int x = 0; x < newImage.width() && !found; ++x) {
+		for (int y = 0; y < newImage.height() && !found; ++y) {
+			if (newImage.pixelIndex(x, y) != 0) {
+				left = x;
+				found = true;
+			}
+		}
+	}
+
+	// find the right
+	found = false;
+	for (int x = newImage.width() - 1; x >= 0 && !found; --x) {
+		for (int y = newImage.height() - 1; y >= 0 && !found; --y) {
+			if (newImage.pixelIndex(x, y) != 0) {
+				right = x;
+				found = true;
+			}
+		}
+	}
+
+	int pieceWidth = right - left + 1;
+	int pieceHeight = bottom - top + 1;
+
+	QImage cropped = newImage.copy(left, top, pieceWidth, pieceHeight);
+	newImage = RImage(cropped.width(), cropped.height(), QImage::Format_Indexed8);
+	newImage.setGrayColorTable();
+	for (int x = 0; x < newImage.width(); ++x) {
+		for (int y = 0; y < newImage.height(); ++y) {
+			newImage.setPixel(x, y, cropped.pixelIndex(x, y));
+		}
+	}
+
+	return newImage;
 }

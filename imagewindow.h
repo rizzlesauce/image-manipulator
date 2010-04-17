@@ -54,6 +54,9 @@ private slots:
 	void on_actionColor_Equalize_triggered();
 	void on_actionPredictive_Encode_triggered();
 	void on_actionPredictive_Decode_triggered();
+	void on_actionMagnify_triggered();
+	void on_actionShrink_triggered();
+	void on_actionRotate_triggered();
 };
 
 #endif // IMAGEWINDOW_H
