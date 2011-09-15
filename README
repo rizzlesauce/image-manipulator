@@ -1,3 +1,7 @@
+author: Ross Adamson
+
+Image manipulator. Experiments and features related to digital images and signal processing.
+
 This project depends on:
 qmake (and the QT library)
 gnuplot (for producing graphs and histograms)
