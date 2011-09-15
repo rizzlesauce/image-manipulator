@@ -1,7 +1,7 @@
 #include "Utils.h"
-#include <wait.h>
+//#include <sys/wait.h>
 #include <string>
-#include <sys/sendfile.h>
+//#include <sys/sendfile.h>
 //#include "Config.h"
 #include <fcntl.h>
 #include <sys/stat.h>

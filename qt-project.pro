@@ -4,14 +4,13 @@
 # QT += phonon
 TARGET = qt-project
 TEMPLATE = app
+INCLUDEPATH += /opt/local/include
 SOURCES += rotatedialog.cpp \
     shrinkdialog.cpp \
     magnifydialog.cpp \
     FourierUtils.cpp \
     generatesinusoidimagedialog.cpp \
     addsinecosinedialog.cpp \
-    SampledChord.cpp \
-    SampledTone.cpp \
     customfilterdialog.cpp \
     unsharpmaskdialog.cpp \
     medianfilterdialog.cpp \
@@ -31,8 +30,6 @@ HEADERS += rotatedialog.h \
     FourierUtils.h \
     generatesinusoidimagedialog.h \
     addsinecosinedialog.h \
-    SampledChord.h \
-    SampledTone.h \
     customfilterdialog.h \
     unsharpmaskdialog.h \
     medianfilterdialog.h \
@@ -58,8 +55,6 @@ FORMS += rotatedialog.ui \
     imagewindow.ui
 
 # add external library links
-LIBS += -ljack \
-    -lpthread \
-    -lrt \
-    -lfftw3 \
+LIBS += -lpthread \
+    -L/opt/local/lib -lfftw3 \
     -lm

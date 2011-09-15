@@ -991,7 +991,7 @@ vector<double> MainWindow::butterworth1D(int size, double cutoff, double sharpne
 	double cutoffSquared = pow(cutoff, 2);
 
 	for (int i = 0; i < size; ++i) {
-		butterworth[i] = 1.0 / (1.0 + pow(pow(i, 2) / cutoffSquared, sharpness));
+		butterworth[i] = 1.0f / (1.0f + pow(pow((float)i, 2) / cutoffSquared, sharpness));
 	}
 
 	return butterworth;

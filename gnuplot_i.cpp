@@ -29,6 +29,10 @@
 
 #include "gnuplot_i.h"
 
+#ifndef uint
+#define uint unsigned int
+#endif
+
 //declare classes in global namespace
 
 

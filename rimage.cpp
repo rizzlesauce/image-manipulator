@@ -347,9 +347,9 @@ void RImage::medianFilter(int neighborhoodSize) {
 			}
 			values.sort();
 			list<int>::iterator it = values.begin();
-			for (uint i = 0; i < values.size() / 2; ++it, ++i);
-
-			setPixel(x, y, *it);
+            for (uint i = 0; i < values.size() / 2; ++it, ++i) {
+                setPixel(x, y, *it);
+            }
 		}
 	}
 
@@ -394,8 +394,8 @@ void RImage::gradientMagnitude() {
 	double lowest = 5000000;
 	double highest = 0;
 	for (int x = 0; x < width(); ++x) {
-		for (int y = 0; y < height(); ++y) {
-			double sqroot = sqrt(pow(xChanges[x][y], 2) + pow(yChanges[x][y], 2));
+        for (int y = 0; y < height(); ++y) {
+            double sqroot = sqrt(pow((float)xChanges[x][y], 2) + pow((float)yChanges[x][y], 2));
 			squareRoots[x][y] = sqroot;
 
 			if (sqroot < lowest) {

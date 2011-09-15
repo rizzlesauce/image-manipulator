@@ -1010,8 +1010,8 @@ void ImageWindow::on_actionUniform_Average_Frequency_triggered() {
     first = true;
     for (int i = 0; i < signalSize; ++i) {
     	double val;
-    	FourierUtils::complexToReal(out[i], val);
-    	val = val / (double)pow(kernelSize, 2);
+        FourierUtils::complexToReal(out[i], val);
+        val = val / (double)pow((float)kernelSize, 2);
     	if (first) {
     		min = max = val;
     		first = false;
@@ -1037,7 +1037,7 @@ void ImageWindow::on_actionUniform_Average_Frequency_triggered() {
     		FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, paddedHeight)], value);
 
     		// since averaging, divide result by kernelSize^2
-    		value = value / (double)pow(kernelSize, 2);
+            value = value / (double)pow((float)kernelSize, 2);
 
     		/*
     		// scale value
@@ -1103,7 +1103,7 @@ void ImageWindow::on_actionRemove_Interference_triggered() {
     maximaIndices.push_back(FFTW_INDEX2D(0, height - 1, height));
 
     int neighborhoodSize = 3;
-    int potentialNeighborhoodSize = (int)pow(neighborhoodSize, 2);
+    int potentialNeighborhoodSize = (int)pow((float)neighborhoodSize, 2);
     fftw_complex neighborhood[potentialNeighborhoodSize];
 
     int ignoreDistance = 0;//15;
