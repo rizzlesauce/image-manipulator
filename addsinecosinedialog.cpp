@@ -7,7 +7,7 @@
 AddSineCosineDialog::AddSineCosineDialog(QWidget *parent)
     : QDialog(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 }
 
 AddSineCosineDialog::~AddSineCosineDialog()
@@ -16,10 +16,10 @@ AddSineCosineDialog::~AddSineCosineDialog()
 }
 
 void AddSineCosineDialog::on_okButton_pressed() {
-	MainWindow *win = (MainWindow*)parentWidget();
+    MainWindow *win = (MainWindow*)parentWidget();
 
-	int numSamples = 128;
-	double cycles = 8.0;
+    int numSamples = 128;
+    double cycles = 8.0;
     vector<double> wave(numSamples, 0.0);
 
     double amountSine = ui.sineSpinBox->value();
@@ -27,8 +27,8 @@ void AddSineCosineDialog::on_okButton_pressed() {
 
     // create the wave
     for (int t = 0; t < numSamples; ++t) {
-    	wave[t] += amountSine * sin(2.0 * SAMPLEDTONE_PI * (double)t * cycles / (double)numSamples);
-    	wave[t] += amountCosine * cos(2.0 * SAMPLEDTONE_PI * (double)t * cycles / (double)numSamples);
+        wave[t] += amountSine * sin(2.0 * SAMPLEDTONE_PI * (double)t * cycles / (double)numSamples);
+        wave[t] += amountCosine * cos(2.0 * SAMPLEDTONE_PI * (double)t * cycles / (double)numSamples);
     }
 
     win->transformAndPlotWave(wave, "part_a_sum_sine_cosine");

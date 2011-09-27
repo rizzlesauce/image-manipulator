@@ -16,7 +16,7 @@ private:
     Ui::MagnifyDialogClass ui;
 
 private slots:
-	void on_magnifyButton_pressed();
+    void on_magnifyButton_pressed();
 };
 
 #endif // MAGNIFYDIALOG_H

@@ -16,7 +16,7 @@ private:
     Ui::RotateDialogClass ui;
 
 private slots:
-	void on_rotateButton_pressed();
+    void on_rotateButton_pressed();
 };
 
 #endif // ROTATEDIALOG_H

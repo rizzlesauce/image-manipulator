@@ -15,19 +15,19 @@
 
 class SampledTone {
 public:
-	SampledTone(jack_default_audio_sample_t freq, int framesPerSecond, float _amplitude);
-	SampledTone();
-	virtual ~SampledTone();
+    SampledTone(jack_default_audio_sample_t freq, int framesPerSecond, float _amplitude);
+    SampledTone();
+    virtual ~SampledTone();
 
-	jack_default_audio_sample_t frequency;
-	int sampleRate;
-	float amplitude;
-	int sampleCount;
-	jack_default_audio_sample_t framesPerCycle;
-	int cycleEndSample;
+    jack_default_audio_sample_t frequency;
+    int sampleRate;
+    float amplitude;
+    int sampleCount;
+    jack_default_audio_sample_t framesPerCycle;
+    int cycleEndSample;
 
-	jack_default_audio_sample_t getSample();
-	void init(jack_default_audio_sample_t freq, int framesPerSecond);
+    jack_default_audio_sample_t getSample();
+    void init(jack_default_audio_sample_t freq, int framesPerSecond);
 };
 
 #endif /* SAMPLEDTONE_H_ */

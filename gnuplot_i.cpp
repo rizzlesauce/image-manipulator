@@ -53,7 +53,7 @@ inline Gnuplot& Gnuplot::operator<<(const std::string &cmdstr){
     inline Gnuplot& Gnuplot::unset_smooth(){ smooth = ""; return *this;};
 
     /// turns grid on/off
-    inline Gnuplot& Gnuplot::set_grid()	{cmd("set grid");return *this;};
+    inline Gnuplot& Gnuplot::set_grid()    {cmd("set grid");return *this;};
     /// grid is not set by default
     inline Gnuplot& Gnuplot::unset_grid(){cmd("unset grid");return *this;};
 

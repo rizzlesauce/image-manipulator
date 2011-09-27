@@ -5,7 +5,7 @@
 MedianFilterDialog::MedianFilterDialog(QWidget *parent)
     : QDialog(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 }
 
 MedianFilterDialog::~MedianFilterDialog()
@@ -15,9 +15,9 @@ MedianFilterDialog::~MedianFilterDialog()
 
 void MedianFilterDialog::on_applyFilterButton_pressed() {
 
-	int neighborhoodSize = ui.neighborhoodSizeBox->value();
+    int neighborhoodSize = ui.neighborhoodSizeBox->value();
 
-	ImageWindow *pwindow = (ImageWindow*)this->parentWidget();
-	pwindow->image.medianFilter(neighborhoodSize);
-	pwindow->setImage(pwindow->image);
+    ImageWindow *pwindow = (ImageWindow*)this->parentWidget();
+    pwindow->image.medianFilter(neighborhoodSize);
+    pwindow->setImage(pwindow->image);
 }

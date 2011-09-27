@@ -49,16 +49,16 @@ void MainWindow::openFileChooser()
     if (fileNames.size() == 0) {
             // no file chosen
     } else {
-    	for (int i = 0; i < fileNames.size(); ++i) {
-	            // file chosen
-	        //setImage(new RImage(fileName));
-	        RImage img(fileNames.at(i));
+        for (int i = 0; i < fileNames.size(); ++i) {
+                // file chosen
+            //setImage(new RImage(fileName));
+            RImage img(fileNames.at(i));
 
-	        // create new window
-	        ImageWindow* win = new ImageWindow(this);
-	        win->setImage(img);
-	        win->show();
-	    }
+            // create new window
+            ImageWindow* win = new ImageWindow(this);
+            win->setImage(img);
+            win->show();
+        }
     }
 }
 
@@ -69,34 +69,34 @@ void MainWindow::on_actionGenerate_sinusoid_image_triggered() {
 }
 
 void MainWindow::on_actionSine_wave_triggered() {
-	int numSamples = 128;
-	double cycles = 8.0;
+    int numSamples = 128;
+    double cycles = 8.0;
     vector<double> wave(numSamples, 0.0);
 
     // create the wave
     for (int t = 0; t < numSamples; ++t) {
-    	wave[t] = sin(2.0 * SAMPLEDTONE_PI * (double)t * cycles / (double)numSamples);
+        wave[t] = sin(2.0 * SAMPLEDTONE_PI * (double)t * cycles / (double)numSamples);
     }
 
     transformAndPlotWave(wave, "part_a_sine");
 }
 
 void MainWindow::on_actionCosine_wave_triggered() {
-	int numSamples = 128;
-	double cycles = 8.0;
+    int numSamples = 128;
+    double cycles = 8.0;
     vector<double> wave(numSamples, 0.0);
 
     // create the wave
     for (int t = 0; t < numSamples; ++t) {
-    	wave[t] = cos(2.0 * SAMPLEDTONE_PI * (double)t * cycles / (double)numSamples);
+        wave[t] = cos(2.0 * SAMPLEDTONE_PI * (double)t * cycles / (double)numSamples);
     }
 
     transformAndPlotWave(wave, "part_a_cosine");
 }
 
 void MainWindow::transformAndPlotWave(vector<double> wave, string waveName) {
-	int numSamples = wave.size();
-	fftw_complex *in, *out;
+    int numSamples = wave.size();
+    fftw_complex *in, *out;
     fftw_plan p;
     double min, max;
 
@@ -116,13 +116,13 @@ void MainWindow::transformAndPlotWave(vector<double> wave, string waveName) {
     //max = 10;
     min = max = 0.0;
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::justRealToComplex(wave[i], in[i]);
-    	if (wave[i] < min) {
-    		min = wave[i];
-    	}
-    	if (wave[i] > max) {
-    		max = wave[i];
-    	}
+        FourierUtils::justRealToComplex(wave[i], in[i]);
+        if (wave[i] < min) {
+            min = wave[i];
+        }
+        if (wave[i] > max) {
+            max = wave[i];
+        }
     }
 
     // create a new process
@@ -173,13 +173,13 @@ void MainWindow::transformAndPlotWave(vector<double> wave, string waveName) {
     min = max = 0.0;
     vector<double> real(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToReal(out[i], real[i]);
-    	if (real[i] < min) {
-    		min = real[i];
-    	}
-    	if (real[i] > max) {
-    		max = real[i];
-    	}
+        FourierUtils::complexToReal(out[i], real[i]);
+        if (real[i] < min) {
+            min = real[i];
+        }
+        if (real[i] > max) {
+            max = real[i];
+        }
     }
 
     // display the real
@@ -228,13 +228,13 @@ void MainWindow::transformAndPlotWave(vector<double> wave, string waveName) {
     min = max = 0.0;
     vector<double> imaginary(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToImaginary(out[i], imaginary[i]);
-    	if (imaginary[i] < min) {
-    		min = imaginary[i];
-    	}
-    	if (imaginary[i] > max) {
-    		max = imaginary[i];
-    	}
+        FourierUtils::complexToImaginary(out[i], imaginary[i]);
+        if (imaginary[i] < min) {
+            min = imaginary[i];
+        }
+        if (imaginary[i] > max) {
+            max = imaginary[i];
+        }
     }
 
     // display the imaginary
@@ -283,13 +283,13 @@ void MainWindow::transformAndPlotWave(vector<double> wave, string waveName) {
     min = max = 0.0;
     vector<double> magnitude(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToMagnitude(out[i], magnitude[i]);
-    	if (magnitude[i] < min) {
-    		min = magnitude[i];
-    	}
-    	if (magnitude[i] > max) {
-    		max = magnitude[i];
-    	}
+        FourierUtils::complexToMagnitude(out[i], magnitude[i]);
+        if (magnitude[i] < min) {
+            min = magnitude[i];
+        }
+        if (magnitude[i] > max) {
+            max = magnitude[i];
+        }
     }
 
     // display the magnitude
@@ -338,13 +338,13 @@ void MainWindow::transformAndPlotWave(vector<double> wave, string waveName) {
     min = max = 0.0;
     vector<double> phase(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToPhase(out[i], phase[i]);
-    	if (phase[i] < min) {
-    		min = phase[i];
-    	}
-    	if (phase[i] > max) {
-    		max = phase[i];
-    	}
+        FourierUtils::complexToPhase(out[i], phase[i]);
+        if (phase[i] < min) {
+            min = phase[i];
+        }
+        if (phase[i] > max) {
+            max = phase[i];
+        }
     }
 
     // display the phase
@@ -393,13 +393,13 @@ void MainWindow::transformAndPlotWave(vector<double> wave, string waveName) {
     min = max = 0.0;
     vector<double> power(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToPower(out[i], power[i]);
-    	if (power[i] < min) {
-    		min = power[i];
-    	}
-    	if (power[i] > max) {
-    		max = power[i];
-    	}
+        FourierUtils::complexToPower(out[i], power[i]);
+        if (power[i] < min) {
+            min = power[i];
+        }
+        if (power[i] > max) {
+            max = power[i];
+        }
     }
 
     // display the power
@@ -460,22 +460,22 @@ void MainWindow::on_actionSignal_from_file_triggered() {
             // no file chosen
     } else {
             // file chosen
-    	vector<double> signal;
+        vector<double> signal;
 
-		string line;
-		ifstream myfile(fileName.toStdString().c_str());
-		if (myfile.is_open()) {
-			while (!myfile.eof()) {
-				getline(myfile, line);
-				signal.push_back(atof(line.c_str()));
-			}
-			myfile.close();
-		} else {
-			Debugger::getInstance().print("Unable to open signal file");
-		}
+        string line;
+        ifstream myfile(fileName.toStdString().c_str());
+        if (myfile.is_open()) {
+            while (!myfile.eof()) {
+                getline(myfile, line);
+                signal.push_back(atof(line.c_str()));
+            }
+            myfile.close();
+        } else {
+            Debugger::getInstance().print("Unable to open signal file");
+        }
 
-		transformAndPlotWave(signal, fileName.toStdString());
-	}
+        transformAndPlotWave(signal, fileName.toStdString());
+    }
 }
 
 void MainWindow::on_action1D_Low_Pass_triggered() {
@@ -486,27 +486,27 @@ void MainWindow::on_action1D_Low_Pass_triggered() {
             // no file chosen
     } else {
             // file chosen
-    	vector<double> signal;
+        vector<double> signal;
 
-		string line;
-		ifstream myfile(fileName.toStdString().c_str());
-		if (myfile.is_open()) {
-			while (!myfile.eof()) {
-				getline(myfile, line);
-				signal.push_back(atof(line.c_str()));
-			}
-			myfile.close();
-		} else {
-			Debugger::getInstance().print("Unable to open signal file");
-		}
+        string line;
+        ifstream myfile(fileName.toStdString().c_str());
+        if (myfile.is_open()) {
+            while (!myfile.eof()) {
+                getline(myfile, line);
+                signal.push_back(atof(line.c_str()));
+            }
+            myfile.close();
+        } else {
+            Debugger::getInstance().print("Unable to open signal file");
+        }
 
-		lowPassFilter(signal, fileName.toStdString());
-	}
+        lowPassFilter(signal, fileName.toStdString());
+    }
 }
 
 void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
-	int numSamples = wave.size();
-	fftw_complex *in, *out;
+    int numSamples = wave.size();
+    fftw_complex *in, *out;
     fftw_plan p, backward;
     double min, max;
 
@@ -527,13 +527,13 @@ void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
     //max = 10;
     min = max = 0.0;
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::justRealToComplex(wave[i], in[i]);
-    	if (wave[i] < min) {
-    		min = wave[i];
-    	}
-    	if (wave[i] > max) {
-    		max = wave[i];
-    	}
+        FourierUtils::justRealToComplex(wave[i], in[i]);
+        if (wave[i] < min) {
+            min = wave[i];
+        }
+        if (wave[i] > max) {
+            max = wave[i];
+        }
     }
 
     // create a new process
@@ -585,12 +585,12 @@ void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
     // plot low pass filter
     min = max = 0.0;
     for (unsigned int i = 0; i < lowPass.size(); ++i) {
-    	if (lowPass[i] < min) {
-    		min = lowPass[i];
-    	}
-    	if (lowPass[i] > max) {
-    		max = lowPass[i];
-    	}
+        if (lowPass[i] < min) {
+            min = lowPass[i];
+        }
+        if (lowPass[i] > max) {
+            max = lowPass[i];
+        }
     }
 
     // display the real
@@ -635,7 +635,7 @@ void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
 
     // calculate the new frequency function for the signal
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::realTimesComplex(lowPass[i], out[i], in[i]);
+        FourierUtils::realTimesComplex(lowPass[i], out[i], in[i]);
     }
 
     // inverse fourier transform
@@ -648,7 +648,7 @@ void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
     vector<double> filteredWave(numSamples);
 
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToReal(out[i], filteredWave[i]);
+        FourierUtils::complexToReal(out[i], filteredWave[i]);
     }
 
     // plot the wave
@@ -656,13 +656,13 @@ void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
     //max = 10;
     min = max = 0.0;
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::justRealToComplex(wave[i], in[i]);
-    	if (filteredWave[i] < min) {
-    		min = filteredWave[i];
-    	}
-    	if (filteredWave[i] > max) {
-    		max = filteredWave[i];
-    	}
+        FourierUtils::justRealToComplex(wave[i], in[i]);
+        if (filteredWave[i] < min) {
+            min = filteredWave[i];
+        }
+        if (filteredWave[i] > max) {
+            max = filteredWave[i];
+        }
     }
 
     // create a new process
@@ -709,13 +709,13 @@ void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
     min = max = 0.0;
     vector<double> real(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToReal(out[i], real[i]);
-    	if (real[i] < min) {
-    		min = real[i];
-    	}
-    	if (real[i] > max) {
-    		max = real[i];
-    	}
+        FourierUtils::complexToReal(out[i], real[i]);
+        if (real[i] < min) {
+            min = real[i];
+        }
+        if (real[i] > max) {
+            max = real[i];
+        }
     }
 
     // display the real
@@ -764,13 +764,13 @@ void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
     min = max = 0.0;
     vector<double> imaginary(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToImaginary(out[i], imaginary[i]);
-    	if (imaginary[i] < min) {
-    		min = imaginary[i];
-    	}
-    	if (imaginary[i] > max) {
-    		max = imaginary[i];
-    	}
+        FourierUtils::complexToImaginary(out[i], imaginary[i]);
+        if (imaginary[i] < min) {
+            min = imaginary[i];
+        }
+        if (imaginary[i] > max) {
+            max = imaginary[i];
+        }
     }
 
     // display the imaginary
@@ -819,13 +819,13 @@ void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
     min = max = 0.0;
     vector<double> magnitude(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToMagnitude(out[i], magnitude[i]);
-    	if (magnitude[i] < min) {
-    		min = magnitude[i];
-    	}
-    	if (magnitude[i] > max) {
-    		max = magnitude[i];
-    	}
+        FourierUtils::complexToMagnitude(out[i], magnitude[i]);
+        if (magnitude[i] < min) {
+            min = magnitude[i];
+        }
+        if (magnitude[i] > max) {
+            max = magnitude[i];
+        }
     }
 
     // display the magnitude
@@ -874,13 +874,13 @@ void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
     min = max = 0.0;
     vector<double> phase(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToPhase(out[i], phase[i]);
-    	if (phase[i] < min) {
-    		min = phase[i];
-    	}
-    	if (phase[i] > max) {
-    		max = phase[i];
-    	}
+        FourierUtils::complexToPhase(out[i], phase[i]);
+        if (phase[i] < min) {
+            min = phase[i];
+        }
+        if (phase[i] > max) {
+            max = phase[i];
+        }
     }
 
     // display the phase
@@ -929,13 +929,13 @@ void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
     min = max = 0.0;
     vector<double> power(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToPower(out[i], power[i]);
-    	if (power[i] < min) {
-    		min = power[i];
-    	}
-    	if (power[i] > max) {
-    		max = power[i];
-    	}
+        FourierUtils::complexToPower(out[i], power[i]);
+        if (power[i] < min) {
+            min = power[i];
+        }
+        if (power[i] > max) {
+            max = power[i];
+        }
     }
 
     // display the power
@@ -987,12 +987,12 @@ void MainWindow::lowPassFilter(vector<double> wave, string waveName) {
 }
 
 vector<double> MainWindow::butterworth1D(int size, double cutoff, double sharpness) {
-	vector<double> butterworth(size);
-	double cutoffSquared = pow(cutoff, 2);
+    vector<double> butterworth(size);
+    double cutoffSquared = pow(cutoff, 2);
 
-	for (int i = 0; i < size; ++i) {
-		butterworth[i] = 1.0f / (1.0f + pow(pow((float)i, 2) / cutoffSquared, sharpness));
-	}
+    for (int i = 0; i < size; ++i) {
+        butterworth[i] = 1.0f / (1.0f + pow(pow((float)i, 2) / cutoffSquared, sharpness));
+    }
 
-	return butterworth;
+    return butterworth;
 }

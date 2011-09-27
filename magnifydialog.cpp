@@ -5,7 +5,7 @@
 MagnifyDialog::MagnifyDialog(QWidget *parent)
     : QDialog(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 }
 
 MagnifyDialog::~MagnifyDialog()
@@ -14,12 +14,12 @@ MagnifyDialog::~MagnifyDialog()
 }
 
 void MagnifyDialog::on_magnifyButton_pressed() {
-	ImageWindow *win = (ImageWindow*)parentWidget();
+    ImageWindow *win = (ImageWindow*)parentWidget();
 
-	ImageWindow *newWindow = new ImageWindow(win->parentWidget());
-	RImage newImage = win->image.magnify(ui.factorSpinBox->value());
+    ImageWindow *newWindow = new ImageWindow(win->parentWidget());
+    RImage newImage = win->image.magnify(ui.factorSpinBox->value());
 
-	newWindow->setImage(newImage);
+    newWindow->setImage(newImage);
 
-	newWindow->show();
+    newWindow->show();
 }

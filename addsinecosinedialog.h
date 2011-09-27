@@ -16,7 +16,7 @@ private:
     Ui::AddSineCosineDialogClass ui;
 
 private slots:
-	void on_okButton_pressed();
+    void on_okButton_pressed();
 };
 
 #endif // ADDSINECOSINEDIALOG_H

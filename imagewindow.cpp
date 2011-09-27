@@ -38,8 +38,8 @@ ImageWindow::~ImageWindow()
  * Open up the average images dialog.
  */
 void ImageWindow::on_actionAverage_With_Images_triggered() {
-	AverageImagesDialog *dialog = new AverageImagesDialog(this);
-	dialog->show();
+    AverageImagesDialog *dialog = new AverageImagesDialog(this);
+    dialog->show();
 }
 
 void ImageWindow::saveImage() {
@@ -85,9 +85,9 @@ void ImageWindow::equalizeImage() {
 }
 
 void ImageWindow::on_actionClone_triggered() {
-	ImageWindow *newWindow = new ImageWindow(parentWidget());
-	newWindow->setImage(image);
-	newWindow->show();
+    ImageWindow *newWindow = new ImageWindow(parentWidget());
+    newWindow->setImage(image);
+    newWindow->show();
 }
 
 void ImageWindow::createHistogram(bool display, string fileName) {
@@ -260,65 +260,65 @@ void ImageWindow::on_actionSave_Equalization_Table_Plot_triggered()
 }
 
 void ImageWindow::on_actionUniform_Average_triggered() {
-	UniformAverageDialog *dialog = new UniformAverageDialog(this);
-	dialog->show();
+    UniformAverageDialog *dialog = new UniformAverageDialog(this);
+    dialog->show();
 }
 
 void ImageWindow::on_actionMedian_Filter_triggered() {
-	MedianFilterDialog *dialog = new MedianFilterDialog(this);
-	dialog->show();
+    MedianFilterDialog *dialog = new MedianFilterDialog(this);
+    dialog->show();
 }
 
 void ImageWindow::on_actionUnsharp_Mask_triggered() {
-	UnsharpMaskDialog *dialog = new UnsharpMaskDialog(this);
-	dialog->show();
+    UnsharpMaskDialog *dialog = new UnsharpMaskDialog(this);
+    dialog->show();
 }
 
 void ImageWindow::on_actionSobelX_triggered() {
-	image.sobelX();
-	this->reloadPixmap();
+    image.sobelX();
+    this->reloadPixmap();
 }
 
 void ImageWindow::on_actionSobelY_triggered() {
-	image.sobelY();
-	this->reloadPixmap();
+    image.sobelY();
+    this->reloadPixmap();
 }
 
 void ImageWindow::on_actionLaplacian_triggered() {
-	image.laplacian();
-	reloadPixmap();
+    image.laplacian();
+    reloadPixmap();
 }
 
 void ImageWindow::on_actionGradientMagnitude_triggered() {
-	image.gradientMagnitude();
-	reloadPixmap();
+    image.gradientMagnitude();
+    reloadPixmap();
 }
 
 void ImageWindow::on_actionFourier_Transform_triggered() {
-	transformAndPlotImage();
+    transformAndPlotImage();
 }
 
 void ImageWindow::transformAndPlotImage() {
 
-	vector<double> xs, ys, zs;
+    vector<double> xs, ys, zs;
 
-	string signalName = "myimage";
-	string style3d = "lines";
-	//int samples3d = 10;
+    string signalName = "myimage";
+    string style3d = "lines";
+    //int samples3d = 10;
 
-	int width = image.width();
-	int height = image.height();
+    int width = image.width();
+    int height = image.height();
 
-	for (int x = 0; x < width; ++x) {
-		for (int y = 0; y < height; ++y) {
-			xs.push_back((double)x);
-			ys.push_back((double)y);
-		}
-	}
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
+            xs.push_back((double)x);
+            ys.push_back((double)y);
+        }
+    }
 
-	int size = width * height;
+    int size = width * height;
 
-	fftw_complex *in, *out;
+    fftw_complex *in, *out;
     fftw_plan p;
     double min, max;
 
@@ -340,19 +340,19 @@ void ImageWindow::transformAndPlotImage() {
     zs.clear();
     min = max = 0.0;
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
-    		double value = (double)image.pixelIndex(x, y);
-    		zs.push_back(value);
+        for (int y = 0; y < height; ++y) {
+            double value = (double)image.pixelIndex(x, y);
+            zs.push_back(value);
 
-    		FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, height)]);
+            FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, height)]);
 
-    		if (value < min) {
-    			min = value;
-    		}
-    		if (value > max) {
-    			max = value;
-    		}
-    	}
+            if (value < min) {
+                min = value;
+            }
+            if (value > max) {
+                max = value;
+            }
+        }
     }
 
     // create a new process
@@ -400,10 +400,10 @@ void ImageWindow::transformAndPlotImage() {
 
     // set the input signal
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
-    		double value = (double)image.pixelIndex(x, y);
-    		FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, height)]);
-    	}
+        for (int y = 0; y < height; ++y) {
+            double value = (double)image.pixelIndex(x, y);
+            FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, height)]);
+        }
     }
 
     // calculate the fourier transform
@@ -417,17 +417,17 @@ void ImageWindow::transformAndPlotImage() {
     bool maxSet = false;
     vector<vector<double> > magnitude(width, vector<double>(height));
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
-	    	FourierUtils::complexToMagnitude(out[FFTW_INDEX2D(x, y, height)], magnitude[x][y]);
-	    	if (magnitude[x][y] < min || !minSet) {
-	    		minSet = true;
-	    		min = magnitude[x][y];
-	    	}
-	    	if (magnitude[x][y] > max || !maxSet) {
-	    		maxSet = true;
-	    		max = magnitude[x][y];
-	    	}
-    	}
+        for (int y = 0; y < height; ++y) {
+            FourierUtils::complexToMagnitude(out[FFTW_INDEX2D(x, y, height)], magnitude[x][y]);
+            if (magnitude[x][y] < min || !minSet) {
+                minSet = true;
+                min = magnitude[x][y];
+            }
+            if (magnitude[x][y] > max || !maxSet) {
+                maxSet = true;
+                max = magnitude[x][y];
+            }
+        }
     }
 
     stringstream ss;
@@ -438,23 +438,23 @@ void ImageWindow::transformAndPlotImage() {
     double magRange = max - min;
     double magScale;
     if (magRange == 0.0) {
-    	magScale = 0.0;
+        magScale = 0.0;
     } else {
-    	magScale = (double)(numValues - 1) / magRange;
+        magScale = (double)(numValues - 1) / magRange;
     }
 
     // create the image
     ImageWindow *newWindow = new ImageWindow(parentWidget());
 
-	RImage magImage(width, height, QImage::Format_Indexed8);
-	magImage.setGrayColorTable();
+    RImage magImage(width, height, QImage::Format_Indexed8);
+    magImage.setGrayColorTable();
 
-	for (int x = 0; x < width; ++x) {
-		for (int y = 0; y < height; ++y) {
-			int value = floor((magnitude[x][y] - min) * magScale);
-			magImage.setPixel(x, y, value);
-		}
-	}
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
+            int value = floor((magnitude[x][y] - min) * magScale);
+            magImage.setPixel(x, y, value);
+        }
+    }
 
     newWindow->setImage(magImage);
     newWindow->show();
@@ -465,15 +465,15 @@ void ImageWindow::transformAndPlotImage() {
     min = max = 0.0;
     vector<vector<double>> real(width, vector<double>(height));
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
-	    	FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, height)], real[x][y]);
-	    	if (real[x][y] < min) {
-	    		min = real[x][y];
-	    	}
-	    	if (real[x][y] > max) {
-	    		max = real[x][y];
-	    	}
-	    }
+        for (int y = 0; y < height; ++y) {
+            FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, height)], real[x][y]);
+            if (real[x][y] < min) {
+                min = real[x][y];
+            }
+            if (real[x][y] > max) {
+                max = real[x][y];
+            }
+        }
     }
 
     // display the real
@@ -522,13 +522,13 @@ void ImageWindow::transformAndPlotImage() {
     min = max = 0.0;
     vector<double> imaginary(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToImaginary(out[i], imaginary[i]);
-    	if (imaginary[i] < min) {
-    		min = imaginary[i];
-    	}
-    	if (imaginary[i] > max) {
-    		max = imaginary[i];
-    	}
+        FourierUtils::complexToImaginary(out[i], imaginary[i]);
+        if (imaginary[i] < min) {
+            min = imaginary[i];
+        }
+        if (imaginary[i] > max) {
+            max = imaginary[i];
+        }
     }
 
     // display the imaginary
@@ -577,13 +577,13 @@ void ImageWindow::transformAndPlotImage() {
     min = max = 0.0;
     vector<double> magnitude(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToMagnitude(out[i], magnitude[i]);
-    	if (magnitude[i] < min) {
-    		min = magnitude[i];
-    	}
-    	if (magnitude[i] > max) {
-    		max = magnitude[i];
-    	}
+        FourierUtils::complexToMagnitude(out[i], magnitude[i]);
+        if (magnitude[i] < min) {
+            min = magnitude[i];
+        }
+        if (magnitude[i] > max) {
+            max = magnitude[i];
+        }
     }
 
     // display the magnitude
@@ -632,13 +632,13 @@ void ImageWindow::transformAndPlotImage() {
     min = max = 0.0;
     vector<double> phase(numSamples);
     for (int i = 0; i < numSamples; ++i) {
-    	FourierUtils::complexToPhase(out[i], phase[i]);
-    	if (phase[i] < min) {
-    		min = phase[i];
-    	}
-    	if (phase[i] > max) {
-    		max = phase[i];
-    	}
+        FourierUtils::complexToPhase(out[i], phase[i]);
+        if (phase[i] < min) {
+            min = phase[i];
+        }
+        if (phase[i] > max) {
+            max = phase[i];
+        }
     }
 
     // display the phase
@@ -687,17 +687,17 @@ void ImageWindow::transformAndPlotImage() {
     min = max = 0.0;
     zs.clear();
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
-    		double power;
-	    	FourierUtils::complexToPower(out[FFTW_INDEX2D(x, y, height)], power);
-	    	zs.push_back(power);
-	    	if (power < min) {
-	    		min = power;
-	    	}
-	    	if (power > max) {
-	    		max = power;
-	    	}
-    	}
+        for (int y = 0; y < height; ++y) {
+            double power;
+            FourierUtils::complexToPower(out[FFTW_INDEX2D(x, y, height)], power);
+            zs.push_back(power);
+            if (power < min) {
+                min = power;
+            }
+            if (power > max) {
+                max = power;
+            }
+        }
     }
 
     // display the power
@@ -753,12 +753,12 @@ void ImageWindow::transformAndPlotImage() {
 
 void ImageWindow::on_actionReverse_Fourier_Transform_triggered() {
 
-	int width = image.width();
-	int height = image.height();
+    int width = image.width();
+    int height = image.height();
 
-	int size = width * height;
+    int size = width * height;
 
-	fftw_complex *in, *out;
+    fftw_complex *in, *out;
     fftw_plan p;
     double min, max;
 
@@ -772,10 +772,10 @@ void ImageWindow::on_actionReverse_Fourier_Transform_triggered() {
 
     // set the input signal
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
-    		double value = (double)image.pixelIndex(x, y);
-    		FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, height)]);
-    	}
+        for (int y = 0; y < height; ++y) {
+            double value = (double)image.pixelIndex(x, y);
+            FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, height)]);
+        }
     }
 
     FourierUtils::normalize1DSignal(out, out, size);
@@ -788,17 +788,17 @@ void ImageWindow::on_actionReverse_Fourier_Transform_triggered() {
     bool maxSet = false;
     vector<vector<double> > reals(width, vector<double>(height));
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
-	    	FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, height)], reals[x][y]);
-	    	if (reals[x][y] < min || !minSet) {
-	    		minSet = true;
-	    		min = reals[x][y];
-	    	}
-	    	if (reals[x][y] > max || !maxSet) {
-	    		maxSet = true;
-	    		max = reals[x][y];
-	    	}
-    	}
+        for (int y = 0; y < height; ++y) {
+            FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, height)], reals[x][y]);
+            if (reals[x][y] < min || !minSet) {
+                minSet = true;
+                min = reals[x][y];
+            }
+            if (reals[x][y] > max || !maxSet) {
+                maxSet = true;
+                max = reals[x][y];
+            }
+        }
     }
 
     stringstream ss;
@@ -809,23 +809,23 @@ void ImageWindow::on_actionReverse_Fourier_Transform_triggered() {
     double realsRange = max - min;
     double realsScale;
     if (realsRange == 0.0) {
-    	realsScale = 0.0;
+        realsScale = 0.0;
     } else {
-    	realsScale = (double)(numValues - 1) / realsRange;
+        realsScale = (double)(numValues - 1) / realsRange;
     }
 
     // create the image
     ImageWindow *newWindow = new ImageWindow(parentWidget());
 
-	RImage realsImage(width, height, QImage::Format_Indexed8);
-	realsImage.setGrayColorTable();
+    RImage realsImage(width, height, QImage::Format_Indexed8);
+    realsImage.setGrayColorTable();
 
-	for (int x = 0; x < width; ++x) {
-		for (int y = 0; y < height; ++y) {
-			int value = floor((reals[x][y] - min) * realsScale);
-			realsImage.setPixel(x, y, value);
-		}
-	}
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
+            int value = floor((reals[x][y] - min) * realsScale);
+            realsImage.setPixel(x, y, value);
+        }
+    }
 
     newWindow->setImage(realsImage);
     newWindow->show();
@@ -836,84 +836,84 @@ void ImageWindow::on_actionReverse_Fourier_Transform_triggered() {
 }
 
 void ImageWindow::on_actionUniform_Average_Frequency_triggered() {
-	int width = image.width();
-	int height = image.height();
-	bool first;
-	double min, max;
+    int width = image.width();
+    int height = image.height();
+    bool first;
+    double min, max;
 
-	unsigned int kernelSize = 9;
+    unsigned int kernelSize = 9;
 
-	int paddedWidth = width + kernelSize - 1;
-	int paddedHeight = height + kernelSize - 1;
-	int paddedSize = paddedWidth * paddedHeight;
+    int paddedWidth = width + kernelSize - 1;
+    int paddedHeight = height + kernelSize - 1;
+    int paddedSize = paddedWidth * paddedHeight;
 
-	// calculate the spatial kernel
-	// uniform average 9x9
-	//vector<vector<double> > kernel(kernelSize, vector<double>(kernelSize, 1.0 / (double)(kernelSize << 1)));
-	vector<vector<double> > kernel(kernelSize, vector<double>(kernelSize, 1.0));
+    // calculate the spatial kernel
+    // uniform average 9x9
+    //vector<vector<double> > kernel(kernelSize, vector<double>(kernelSize, 1.0 / (double)(kernelSize << 1)));
+    vector<vector<double> > kernel(kernelSize, vector<double>(kernelSize, 1.0));
 
-	// "center" the filter in the spatial domain
-	vector<vector<double> > filter(paddedWidth, vector<double>(paddedHeight, 0.0));
+    // "center" the filter in the spatial domain
+    vector<vector<double> > filter(paddedWidth, vector<double>(paddedHeight, 0.0));
 
-	int offset = kernelSize >> 1; // divided by 2
+    int offset = kernelSize >> 1; // divided by 2
 
-	max = 1.0;
-	min = 0.0;
-	first = true;
-	for (unsigned int x = 0; x < kernelSize; ++x) {
-		for (unsigned int y = 0; y < kernelSize; ++y) {
-			int relX = x - offset;
-			int relY = y - offset;
+    max = 1.0;
+    min = 0.0;
+    first = true;
+    for (unsigned int x = 0; x < kernelSize; ++x) {
+        for (unsigned int y = 0; y < kernelSize; ++y) {
+            int relX = x - offset;
+            int relY = y - offset;
 
-			int actualX, actualY;
+            int actualX, actualY;
 
-			if (relX < 0) {
-				actualX = paddedWidth + relX;
-			} else {
-				actualX = relX;
-			}
+            if (relX < 0) {
+                actualX = paddedWidth + relX;
+            } else {
+                actualX = relX;
+            }
 
-			if (relY < 0) {
-				actualY = paddedHeight + relY;
-			} else {
-				actualY = relY;
-			}
+            if (relY < 0) {
+                actualY = paddedHeight + relY;
+            } else {
+                actualY = relY;
+            }
 
-			filter[actualX][actualY] = kernel[x][y];
+            filter[actualX][actualY] = kernel[x][y];
 
-			if (first) {
-				max = kernel[x][y];
-				first = false;
-			} else {
-				if (kernel[x][y] < min) {
-					min = kernel[x][y];
-				}
-				if (kernel[x][y] > max) {
-					max = kernel[x][y];
-				}
-			}
-		}
-	}
+            if (first) {
+                max = kernel[x][y];
+                first = false;
+            } else {
+                if (kernel[x][y] < min) {
+                    min = kernel[x][y];
+                }
+                if (kernel[x][y] > max) {
+                    max = kernel[x][y];
+                }
+            }
+        }
+    }
 
-	stringstream ss;
-	ss << "filter: min: " << min << ", max: " << max << endl;
-	Debugger::getInstance().print(ss.str());
+    stringstream ss;
+    ss << "filter: min: " << min << ", max: " << max << endl;
+    Debugger::getInstance().print(ss.str());
 
-	// for debugging purposes display the filter
-	RImage filterImg(paddedWidth, paddedHeight, QImage::Format_Indexed8);
-	filterImg.setGrayColorTable();
-	for (int x = 0; x < paddedWidth; ++x) {
-		for (int y = 0; y < paddedHeight; ++y) {
-			double val = (filter[x][y] - min) / (max - min) * 255.0;
-			filterImg.setPixel(x, y, (int)val);
-		}
-	}
-	ImageWindow *filterWin = new ImageWindow(this->parentWidget());
-	filterWin->setImage(filterImg);
-	filterWin->show();
+    // for debugging purposes display the filter
+    RImage filterImg(paddedWidth, paddedHeight, QImage::Format_Indexed8);
+    filterImg.setGrayColorTable();
+    for (int x = 0; x < paddedWidth; ++x) {
+        for (int y = 0; y < paddedHeight; ++y) {
+            double val = (filter[x][y] - min) / (max - min) * 255.0;
+            filterImg.setPixel(x, y, (int)val);
+        }
+    }
+    ImageWindow *filterWin = new ImageWindow(this->parentWidget());
+    filterWin->setImage(filterImg);
+    filterWin->show();
 
-	// fourier transform the image and the kernel
-	fftw_complex *in, *out, *tmpBuffer;
+    // fourier transform the image and the kernel
+    fftw_complex *in, *out, *tmpBuffer;
     fftw_plan forward, backward;
     //int signalSize = width * height;
     int signalSize = paddedSize;
@@ -926,31 +926,31 @@ void ImageWindow::on_actionUniform_Average_Frequency_triggered() {
 
     // zero out the input buffer
     for (int i = 0; i < signalSize; ++i) {
-    	double val = 0.0;
-    	FourierUtils::justRealToComplex(val, in[i]);
+        double val = 0.0;
+        FourierUtils::justRealToComplex(val, in[i]);
     }
 
     // fill the input buffer with image signal
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
-    		double value = (double)image.pixelIndex(x, y);
-    		FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, paddedHeight)]);
-    	}
+        for (int y = 0; y < height; ++y) {
+            double value = (double)image.pixelIndex(x, y);
+            FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, paddedHeight)]);
+        }
     }
 
-	// for debugging purposes display the padded image
-	RImage paddedImg(paddedWidth, paddedHeight, QImage::Format_Indexed8);
-	paddedImg.setGrayColorTable();
-	for (int x = 0; x < paddedWidth; ++x) {
-		for (int y = 0; y < paddedHeight; ++y) {
-			double val;
-			FourierUtils::complexToReal(in[FFTW_INDEX2D(x, y, paddedHeight)], val);
-			paddedImg.setPixel(x, y, (int)val);
-		}
-	}
-	ImageWindow *paddedWin = new ImageWindow(this->parentWidget());
-	paddedWin->setImage(paddedImg);
-	paddedWin->show();
+    // for debugging purposes display the padded image
+    RImage paddedImg(paddedWidth, paddedHeight, QImage::Format_Indexed8);
+    paddedImg.setGrayColorTable();
+    for (int x = 0; x < paddedWidth; ++x) {
+        for (int y = 0; y < paddedHeight; ++y) {
+            double val;
+            FourierUtils::complexToReal(in[FFTW_INDEX2D(x, y, paddedHeight)], val);
+            paddedImg.setPixel(x, y, (int)val);
+        }
+    }
+    ImageWindow *paddedWin = new ImageWindow(this->parentWidget());
+    paddedWin->setImage(paddedImg);
+    paddedWin->show();
 
     // calculate the fourier transform of the image
     fftw_execute(forward);
@@ -962,16 +962,16 @@ void ImageWindow::on_actionUniform_Average_Frequency_triggered() {
 
     // zero out the intput buffer
     for (int i = 0; i < signalSize; ++i) {
-    	double val = 0.0;
-    	FourierUtils::justRealToComplex(val, in[i]);
+        double val = 0.0;
+        FourierUtils::justRealToComplex(val, in[i]);
     }
 
     // fill the input buffer with filter signal
     for (int x = 0; x < paddedWidth; ++x) {
-    	for (int y = 0; y < paddedHeight; ++y) {
-    		double value = filter[x][y];
-    		FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, paddedHeight)]);
-    	}
+        for (int y = 0; y < paddedHeight; ++y) {
+            double value = filter[x][y];
+            FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, paddedHeight)]);
+        }
     }
 
     // calculate the fourier transform of the filter
@@ -982,25 +982,25 @@ void ImageWindow::on_actionUniform_Average_Frequency_triggered() {
     /*
     // zero out the imaginary part of H(u)
     for (int i = 0; i < signalSize; ++i) {
-    	double val = 0.0;
-		//FourierUtils::realToComplex(val, out[i]);
-    	FourierUtils::imaginaryToComplex(val, out[i]);
+        double val = 0.0;
+        //FourierUtils::realToComplex(val, out[i]);
+        FourierUtils::imaginaryToComplex(val, out[i]);
     }
     */
 
     // perform the array multiplication of the transforms
     for (int x = 0; x < paddedWidth; ++x) {
-    	for (int y = 0; y < paddedHeight; ++y) {
-    		double real;
-    		FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, paddedHeight)], real);
-    		FourierUtils::realTimesComplex(real, tmpBuffer[FFTW_INDEX2D(x, y, paddedHeight)],
-    				in[FFTW_INDEX2D(x, y, paddedHeight)]);
-    		/*
-    		FourierUtils::complexTimesComplex(tmpBuffer[FFTW_INDEX2D(x, y, paddedHeight)],
-    				out[FFTW_INDEX2D(x, y, paddedHeight)],
-    				in[FFTW_INDEX2D(x, y, paddedHeight)]);
-    				*/
-    	}
+        for (int y = 0; y < paddedHeight; ++y) {
+            double real;
+            FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, paddedHeight)], real);
+            FourierUtils::realTimesComplex(real, tmpBuffer[FFTW_INDEX2D(x, y, paddedHeight)],
+                    in[FFTW_INDEX2D(x, y, paddedHeight)]);
+            /*
+            FourierUtils::complexTimesComplex(tmpBuffer[FFTW_INDEX2D(x, y, paddedHeight)],
+                    out[FFTW_INDEX2D(x, y, paddedHeight)],
+                    in[FFTW_INDEX2D(x, y, paddedHeight)]);
+                    */
+        }
     }
 
     // inverse transform
@@ -1009,50 +1009,50 @@ void ImageWindow::on_actionUniform_Average_Frequency_triggered() {
     // get min and max
     first = true;
     for (int i = 0; i < signalSize; ++i) {
-    	double val;
+        double val;
         FourierUtils::complexToReal(out[i], val);
         val = val / (double)pow((float)kernelSize, 2);
-    	if (first) {
-    		min = max = val;
-    		first = false;
-    	} else {
-    		if (val < min) {
-    			min = val;
-    		}
-    		if (val > max) {
-    			max = val;
-    		}
-    	}
+        if (first) {
+            min = max = val;
+            first = false;
+        } else {
+            if (val < min) {
+                min = val;
+            }
+            if (val > max) {
+                max = val;
+            }
+        }
     }
 
     // debugging info
-	ss.clear();
-	ss << "reverse transform: min: " << min << ", max: " << max << endl;
-	Debugger::getInstance().print(ss.str());
+    ss.clear();
+    ss << "reverse transform: min: " << min << ", max: " << max << endl;
+    Debugger::getInstance().print(ss.str());
 
     // construct image from inverse transform
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
-    		double value;
-    		FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, paddedHeight)], value);
+        for (int y = 0; y < height; ++y) {
+            double value;
+            FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, paddedHeight)], value);
 
-    		// since averaging, divide result by kernelSize^2
+            // since averaging, divide result by kernelSize^2
             value = value / (double)pow((float)kernelSize, 2);
 
-    		/*
-    		// scale value
-    		value = (value - min) / (max - min) * 255.0;
-    		*/
+            /*
+            // scale value
+            value = (value - min) / (max - min) * 255.0;
+            */
 
-    		// clip value
-    		if (value < 0.0) {
-    			value = 0.0;
-    		} else if (value > 255.0) {
-    			value = 255.0;
-    		}
+            // clip value
+            if (value < 0.0) {
+                value = 0.0;
+            } else if (value > 255.0) {
+                value = 255.0;
+            }
 
-    		image.setPixel(x, y, (int)value);
-    	}
+            image.setPixel(x, y, (int)value);
+        }
     }
 
     // refresh image
@@ -1067,10 +1067,10 @@ void ImageWindow::on_actionUniform_Average_Frequency_triggered() {
 }
 
 void ImageWindow::on_actionRemove_Interference_triggered() {
-	int width = image.width();
-	int height = image.height();
-	int signalSize = width * height;
-	fftw_complex *in, *out;
+    int width = image.width();
+    int height = image.height();
+    int signalSize = width * height;
+    fftw_complex *in, *out;
     fftw_plan forward, backward;
     //double min, max;
 
@@ -1085,10 +1085,10 @@ void ImageWindow::on_actionRemove_Interference_triggered() {
 
     // fill the input buffer
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
-    		double value = (double)image.pixelIndex(x, y);
-    		FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, height)]);
-    	}
+        for (int y = 0; y < height; ++y) {
+            double value = (double)image.pixelIndex(x, y);
+            FourierUtils::justRealToComplex(value, in[FFTW_INDEX2D(x, y, height)]);
+        }
     }
 
     // calculate the fourier transform
@@ -1115,134 +1115,134 @@ void ImageWindow::on_actionRemove_Interference_triggered() {
 
     // copy the output to the input
     for (int i = 0; i < signalSize; ++i) {
-    	FourierUtils::copyComplex(out[i], in[i]);
+        FourierUtils::copyComplex(out[i], in[i]);
     }
 
     // deal with the wayward frequencies
     //double newMagnitude = 0.0;
     //FourierUtils::realToComplex(newMagnitude, in[0]);
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
+        for (int y = 0; y < height; ++y) {
 
-    		// skip points within a distance of local maxima
-			tooClose = false;
-			for (unsigned int i = 0; i < maximaIndices.size(); ++i) {
-				maximaX = FFTW_INDEX2D_X(maximaIndices[i], height);
-				maximaY = FFTW_INDEX2D_Y(maximaIndices[i], height);
+            // skip points within a distance of local maxima
+            tooClose = false;
+            for (unsigned int i = 0; i < maximaIndices.size(); ++i) {
+                maximaX = FFTW_INDEX2D_X(maximaIndices[i], height);
+                maximaY = FFTW_INDEX2D_Y(maximaIndices[i], height);
 
-				minX = maximaX - ignoreDistance;
-				maxX = maximaX + ignoreDistance;
-				minY = maximaY - ignoreDistance;
-				maxY = maximaY + ignoreDistance;
+                minX = maximaX - ignoreDistance;
+                maxX = maximaX + ignoreDistance;
+                minY = maximaY - ignoreDistance;
+                maxY = maximaY + ignoreDistance;
 
-				if (x >= minX && x <= maxX &&
-						y >= minY && y <= maxY) {
-					tooClose = true;
-					break;
-				}
-			}
+                if (x >= minX && x <= maxX &&
+                        y >= minY && y <= maxY) {
+                    tooClose = true;
+                    break;
+                }
+            }
 
-			if (tooClose) {
-				continue;
-			}
+            if (tooClose) {
+                continue;
+            }
 
-    		// gather the neighborhood
-    		numIncluded = 0;
-    		for (int j = 0 - offset; j <= offset; ++j) {
-				int realX = x + j;
+            // gather the neighborhood
+            numIncluded = 0;
+            for (int j = 0 - offset; j <= offset; ++j) {
+                int realX = x + j;
 
-				if (realX < 0 || realX > width) {
-						// point is outside the image
-					// don't include these
-					continue;
-				}
+                if (realX < 0 || realX > width) {
+                        // point is outside the image
+                    // don't include these
+                    continue;
+                }
 
-    			for (int k = 0 - offset; k <= offset; ++k) {
-    				int realY = y + k;
+                for (int k = 0 - offset; k <= offset; ++k) {
+                    int realY = y + k;
 
-    				if (j == 0 && k == 0) {
-						// don't include origin of the neighborhood
-    					continue;
-    				}
+                    if (j == 0 && k == 0) {
+                        // don't include origin of the neighborhood
+                        continue;
+                    }
 
-    				if (realY < 0 || realY > height) {
-							// point is outside the image
-    					// don't include it
-    					continue;
-    				}
+                    if (realY < 0 || realY > height) {
+                            // point is outside the image
+                        // don't include it
+                        continue;
+                    }
 
-		    		// don't include points within a distance of local maxima
-					tooClose = false;
-					for (unsigned int i = 0; i < maximaIndices.size(); ++i) {
-						maximaX = FFTW_INDEX2D_X(maximaIndices[i], height);
-						maximaY = FFTW_INDEX2D_Y(maximaIndices[i], height);
+                    // don't include points within a distance of local maxima
+                    tooClose = false;
+                    for (unsigned int i = 0; i < maximaIndices.size(); ++i) {
+                        maximaX = FFTW_INDEX2D_X(maximaIndices[i], height);
+                        maximaY = FFTW_INDEX2D_Y(maximaIndices[i], height);
 
-						minX = maximaX - ignoreDistance;
-						maxX = maximaX + ignoreDistance;
-						minY = maximaY - ignoreDistance;
-						maxY = maximaY + ignoreDistance;
+                        minX = maximaX - ignoreDistance;
+                        maxX = maximaX + ignoreDistance;
+                        minY = maximaY - ignoreDistance;
+                        maxY = maximaY + ignoreDistance;
 
-						if (realX >= minX && realX <= maxX &&
-								realY >= minY && realY <= maxY) {
-							tooClose = true;
-							break;
-						}
-					}
+                        if (realX >= minX && realX <= maxX &&
+                                realY >= minY && realY <= maxY) {
+                            tooClose = true;
+                            break;
+                        }
+                    }
 
-					if (tooClose) {
-						continue;
-					}
+                    if (tooClose) {
+                        continue;
+                    }
 
-    				// otherwise, this point qualifies, so include it
-    				FourierUtils::copyComplex(out[FFTW_INDEX2D(realX, realY, height)], neighborhood[numIncluded]);
-    				++numIncluded;
-    			}
-    		}
+                    // otherwise, this point qualifies, so include it
+                    FourierUtils::copyComplex(out[FFTW_INDEX2D(realX, realY, height)], neighborhood[numIncluded]);
+                    ++numIncluded;
+                }
+            }
 
-    		//calculate the neighborhood average
-    		fftw_complex neighborhoodAverage;
-    		double tmpReal, tmpImaginary;
-    		double averageReal = 0.0;
-    		double averageImaginary = 0.0;
-    		for (int i = 0; i < numIncluded; ++i) {
-	    		FourierUtils::complexToRealImaginary(neighborhood[i], tmpReal, tmpImaginary);
-	    		averageReal += tmpReal;
-	    		averageImaginary += tmpImaginary;
-    		}
-    		if (numIncluded > 0) {
-    			averageReal = averageReal / (double)numIncluded;
-    			averageImaginary = averageImaginary / (double)numIncluded;
-    		} else {
-	    		FourierUtils::complexToRealImaginary(out[FFTW_INDEX2D(x, y, height)], averageReal,
-	    				averageImaginary);
-    		}
-    		FourierUtils::realImaginaryToComplex(averageReal, averageImaginary, neighborhoodAverage);
+            //calculate the neighborhood average
+            fftw_complex neighborhoodAverage;
+            double tmpReal, tmpImaginary;
+            double averageReal = 0.0;
+            double averageImaginary = 0.0;
+            for (int i = 0; i < numIncluded; ++i) {
+                FourierUtils::complexToRealImaginary(neighborhood[i], tmpReal, tmpImaginary);
+                averageReal += tmpReal;
+                averageImaginary += tmpImaginary;
+            }
+            if (numIncluded > 0) {
+                averageReal = averageReal / (double)numIncluded;
+                averageImaginary = averageImaginary / (double)numIncluded;
+            } else {
+                FourierUtils::complexToRealImaginary(out[FFTW_INDEX2D(x, y, height)], averageReal,
+                        averageImaginary);
+            }
+            FourierUtils::realImaginaryToComplex(averageReal, averageImaginary, neighborhoodAverage);
 
-    		// check if point is above normal magnitude
-    		double averageMagnitude, thisMagnitude;
-    		FourierUtils::complexToMagnitude(neighborhoodAverage, averageMagnitude);
-    		FourierUtils::complexToMagnitude(out[FFTW_INDEX2D(x, y, height)], thisMagnitude);
+            // check if point is above normal magnitude
+            double averageMagnitude, thisMagnitude;
+            FourierUtils::complexToMagnitude(neighborhoodAverage, averageMagnitude);
+            FourierUtils::complexToMagnitude(out[FFTW_INDEX2D(x, y, height)], thisMagnitude);
 
-    		/*
-    		stringstream magss;
-    		magss << "magnitude amplitude range: " << thisMagnitude << endl;
-    		Debugger::getInstance().print(magss.str());
-    		*/
+            /*
+            stringstream magss;
+            magss << "magnitude amplitude range: " << thisMagnitude << endl;
+            Debugger::getInstance().print(magss.str());
+            */
 
-    		if (thisMagnitude > (averageMagnitude * 1050.0)) {
-					// this is a local maximum
-    			Debugger::getInstance().print("local maximum found\n");
-    			stringstream ss7;
-    			ss7 << "x: " << x << ", y: " << y << ", thisMag: " << thisMagnitude
-    					<< ", avgMag: " << averageMagnitude << endl;
-    			Debugger::getInstance().print(ss7.str());
+            if (thisMagnitude > (averageMagnitude * 1050.0)) {
+                    // this is a local maximum
+                Debugger::getInstance().print("local maximum found\n");
+                stringstream ss7;
+                ss7 << "x: " << x << ", y: " << y << ", thisMag: " << thisMagnitude
+                        << ", avgMag: " << averageMagnitude << endl;
+                Debugger::getInstance().print(ss7.str());
 
-    			//maximaIndices.push_back(FFTW_INDEX2D(x, y, height));
-	    		FourierUtils::copyComplex(neighborhoodAverage, in[FFTW_INDEX2D(x, y, height)]);
-    		} else {
-    			// leave it the way it is
-    		}
-    	}
+                //maximaIndices.push_back(FFTW_INDEX2D(x, y, height));
+                FourierUtils::copyComplex(neighborhoodAverage, in[FFTW_INDEX2D(x, y, height)]);
+            } else {
+                // leave it the way it is
+            }
+        }
     }
 
     int numValues = 256;
@@ -1254,17 +1254,17 @@ void ImageWindow::on_actionRemove_Interference_triggered() {
     bool maxSet = false;
     vector<vector<double> > magnitude(width, vector<double>(height));
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
-	    	FourierUtils::complexToMagnitude(in[FFTW_INDEX2D(x, y, height)], magnitude[x][y]);
-	    	if (magnitude[x][y] < min || !minSet) {
-	    		minSet = true;
-	    		min = magnitude[x][y];
-	    	}
-	    	if (magnitude[x][y] > max || !maxSet) {
-	    		maxSet = true;
-	    		max = magnitude[x][y];
-	    	}
-    	}
+        for (int y = 0; y < height; ++y) {
+            FourierUtils::complexToMagnitude(in[FFTW_INDEX2D(x, y, height)], magnitude[x][y]);
+            if (magnitude[x][y] < min || !minSet) {
+                minSet = true;
+                min = magnitude[x][y];
+            }
+            if (magnitude[x][y] > max || !maxSet) {
+                maxSet = true;
+                max = magnitude[x][y];
+            }
+        }
     }
 
     stringstream ss;
@@ -1274,23 +1274,23 @@ void ImageWindow::on_actionRemove_Interference_triggered() {
     double magRange = max - min;
     double magScale;
     if (magRange == 0.0) {
-    	magScale = 0.0;
+        magScale = 0.0;
     } else {
-    	magScale = (double)(numValues - 1) / magRange;
+        magScale = (double)(numValues - 1) / magRange;
     }
 
     // create the image
     ImageWindow *newWindow = new ImageWindow(parentWidget());
 
-	RImage magImage(width, height, QImage::Format_Indexed8);
-	magImage.setGrayColorTable();
+    RImage magImage(width, height, QImage::Format_Indexed8);
+    magImage.setGrayColorTable();
 
-	for (int x = 0; x < width; ++x) {
-		for (int y = 0; y < height; ++y) {
-			int value = floor((magnitude[x][y] - min) * magScale);
-			magImage.setPixel(x, y, value);
-		}
-	}
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
+            int value = floor((magnitude[x][y] - min) * magScale);
+            magImage.setPixel(x, y, value);
+        }
+    }
 
     newWindow->setImage(magImage);
     newWindow->show();
@@ -1300,17 +1300,17 @@ void ImageWindow::on_actionRemove_Interference_triggered() {
 
     // set the pixels
     for (int x = 0; x < width; ++x) {
-    	for (int y = 0; y < height; ++y) {
-    		double value;
-    		FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, height)], value);
-    		if (value < 0.0) {
-    			value = 0.0;
-    		}
-    		if (value > 255.0) {
-    			value = 255.0;
-    		}
-    		image.setPixel(x, y, (int)value);
-    	}
+        for (int y = 0; y < height; ++y) {
+            double value;
+            FourierUtils::complexToReal(out[FFTW_INDEX2D(x, y, height)], value);
+            if (value < 0.0) {
+                value = 0.0;
+            }
+            if (value > 255.0) {
+                value = 255.0;
+            }
+            image.setPixel(x, y, (int)value);
+        }
     }
     reloadPixmap();
 
@@ -1322,317 +1322,317 @@ void ImageWindow::on_actionRemove_Interference_triggered() {
 
 void ImageWindow::on_actionCrop_and_Resize_triggered() {
 
-	// first find the dimensions of the chess piece
-	int left, right, top, bottom;
-	int width = image.width();
-	int height = image.height();
-	left = right = top = bottom = 0;
-	int foregroundIndex = 0;
-	int backgroundIndex = 1;
-	bool found;
-	int destWidth = 100;
-	int destHeight = 100;
+    // first find the dimensions of the chess piece
+    int left, right, top, bottom;
+    int width = image.width();
+    int height = image.height();
+    left = right = top = bottom = 0;
+    int foregroundIndex = 0;
+    int backgroundIndex = 1;
+    bool found;
+    int destWidth = 100;
+    int destHeight = 100;
 
-	// convert to monochrome
-	QImage monochrome = QImage(width, height, QImage::Format_Mono);
-	for (int x = 0; x < width; ++x) {
-		for (int y = 0; y < height; ++y) {
-			int index = image.pixelIndex(x, y);
-			if (index > (255 / 2)) {
-				index = 1;
-			} else {
-				index = 0;
-			}
-			monochrome.setPixel(x, y, index);
-		}
-	}
+    // convert to monochrome
+    QImage monochrome = QImage(width, height, QImage::Format_Mono);
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
+            int index = image.pixelIndex(x, y);
+            if (index > (255 / 2)) {
+                index = 1;
+            } else {
+                index = 0;
+            }
+            monochrome.setPixel(x, y, index);
+        }
+    }
 
-	// find the top
-	found = false;
-	for (int y = 0; y < height && !found; ++y) {
-		for (int x = 0; x < width && !found; ++x) {
-			if (monochrome.pixelIndex(x, y) == foregroundIndex) {
-				top = y;
-				found = true;
-			}
-		}
-	}
+    // find the top
+    found = false;
+    for (int y = 0; y < height && !found; ++y) {
+        for (int x = 0; x < width && !found; ++x) {
+            if (monochrome.pixelIndex(x, y) == foregroundIndex) {
+                top = y;
+                found = true;
+            }
+        }
+    }
 
-	// find the bottom
-	found = false;
-	for (int y = height - 1; y >= 0 && !found; --y) {
-		for (int x = width - 1; x >= 0 && !found; --x) {
-			if (monochrome.pixelIndex(x, y) == foregroundIndex) {
-				bottom = y;
-				found = true;
-			}
-		}
-	}
+    // find the bottom
+    found = false;
+    for (int y = height - 1; y >= 0 && !found; --y) {
+        for (int x = width - 1; x >= 0 && !found; --x) {
+            if (monochrome.pixelIndex(x, y) == foregroundIndex) {
+                bottom = y;
+                found = true;
+            }
+        }
+    }
 
-	// find the left
-	found = false;
-	for (int x = 0; x < width && !found; ++x) {
-		for (int y = 0; y < height && !found; ++y) {
-			if (monochrome.pixelIndex(x, y) == foregroundIndex) {
-				left = x;
-				found = true;
-			}
-		}
-	}
+    // find the left
+    found = false;
+    for (int x = 0; x < width && !found; ++x) {
+        for (int y = 0; y < height && !found; ++y) {
+            if (monochrome.pixelIndex(x, y) == foregroundIndex) {
+                left = x;
+                found = true;
+            }
+        }
+    }
 
-	// find the right
-	found = false;
-	for (int x = width - 1; x >= 0 && !found; --x) {
-		for (int y = height - 1; y >= 0 && !found; --y) {
-			if (monochrome.pixelIndex(x, y) == foregroundIndex) {
-				right = x;
-				found = true;
-			}
-		}
-	}
+    // find the right
+    found = false;
+    for (int x = width - 1; x >= 0 && !found; --x) {
+        for (int y = height - 1; y >= 0 && !found; --y) {
+            if (monochrome.pixelIndex(x, y) == foregroundIndex) {
+                right = x;
+                found = true;
+            }
+        }
+    }
 
-	int pieceWidth = right - left + 1;
-	int pieceHeight = bottom - top + 1;
+    int pieceWidth = right - left + 1;
+    int pieceHeight = bottom - top + 1;
 
-	// which dimension is greater?
-	bool widthGreater = false;
-	if (pieceWidth > pieceHeight) {
-		widthGreater = true;
-	}
+    // which dimension is greater?
+    bool widthGreater = false;
+    if (pieceWidth > pieceHeight) {
+        widthGreater = true;
+    }
 
-	QImage cropped = monochrome.copy(left, top, pieceWidth, pieceHeight);
-	QImage scaled = cropped.scaledToHeight(destHeight);
+    QImage cropped = monochrome.copy(left, top, pieceWidth, pieceHeight);
+    QImage scaled = cropped.scaledToHeight(destHeight);
 
-	RImage padded = RImage(destWidth, destHeight, QImage::Format_Mono);
-	for (int x = 0; x < destWidth; ++x) {
-		for (int y = 0; y < destHeight; ++y) {
-			int index;
+    RImage padded = RImage(destWidth, destHeight, QImage::Format_Mono);
+    for (int x = 0; x < destWidth; ++x) {
+        for (int y = 0; y < destHeight; ++y) {
+            int index;
 
-			if (x >= scaled.width()) {
-				index = backgroundIndex;
-			} else {
-				index = scaled.pixelIndex(x, y);
-			}
+            if (x >= scaled.width()) {
+                index = backgroundIndex;
+            } else {
+                index = scaled.pixelIndex(x, y);
+            }
 
-			padded.setPixel(x, y, index);
-		}
-	}
+            padded.setPixel(x, y, index);
+        }
+    }
 
-	this->setImage(padded);
+    this->setImage(padded);
 }
 
 void ImageWindow::on_actionColor_Equalize_triggered() {
-	// rgb to hsi
+    // rgb to hsi
 
-	int width = image.width();
-	int height = image.height();
+    int width = image.width();
+    int height = image.height();
 
-	vector<vector<double> > hues(width, vector<double>(height));
-	vector<vector<double> > saturations(width, vector<double>(height));
-	vector<vector<double> > intensities(width, vector<double>(height));
-	//vector<vector<double> > reds(width, vector<double>(height));
-	//vector<vector<double> > greens(width, vector<double>(height));
-	//vector<vector<double> > blues(width, vector<double>(height));
+    vector<vector<double> > hues(width, vector<double>(height));
+    vector<vector<double> > saturations(width, vector<double>(height));
+    vector<vector<double> > intensities(width, vector<double>(height));
+    //vector<vector<double> > reds(width, vector<double>(height));
+    //vector<vector<double> > greens(width, vector<double>(height));
+    //vector<vector<double> > blues(width, vector<double>(height));
 
-	//QColor color;
-	QRgb rgb;
+    //QColor color;
+    QRgb rgb;
 
-	double hue, saturation, intensity, red, green, blue,
-			total_rgb, denominator;
+    double hue, saturation, intensity, red, green, blue,
+            total_rgb, denominator;
 
-	double *min_value;
+    double *min_value;
 
-	for (int x = 0; x < width; ++x) {
-		for (int y = 0; y < height; ++y) {
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
 
-			// get color info
-			rgb = image.pixel(x, y);
+            // get color info
+            rgb = image.pixel(x, y);
 
-			red = (double)qRed(rgb);
-			green = (double)qGreen(rgb);
-			blue = (double)qBlue(rgb);
+            red = (double)qRed(rgb);
+            green = (double)qGreen(rgb);
+            blue = (double)qBlue(rgb);
 
-			// normalize rgb
-			total_rgb = red + green + blue;
+            // normalize rgb
+            total_rgb = red + green + blue;
 
-			red = red / total_rgb;
-			green = green / total_rgb;
-			blue = blue / total_rgb;
+            red = red / total_rgb;
+            green = green / total_rgb;
+            blue = blue / total_rgb;
 
-			denominator = 2.0 * sqrt(pow((red - green), 2) + ((red - blue) * (green - blue)));
+            denominator = 2.0 * sqrt(pow((red - green), 2) + ((red - blue) * (green - blue)));
 
-			if (PRACTICALLY_ZERO(denominator)) {
-				hue = SAMPLEDTONE_PI / 2.0;
-				//hue = 0;
-			} else {
-				// compute hue
-				hue = acos(((red - green) + (red - blue)) / denominator);
+            if (PRACTICALLY_ZERO(denominator)) {
+                hue = SAMPLEDTONE_PI / 2.0;
+                //hue = 0;
+            } else {
+                // compute hue
+                hue = acos(((red - green) + (red - blue)) / denominator);
 
-				if (blue > green) {
-					hue = (2.0 * SAMPLEDTONE_PI) - hue;
-				}
-			}
-			// h ∈ [0, π] for b ≤ g
-			// h ∈ [π , 2π] for b > g
+                if (blue > green) {
+                    hue = (2.0 * SAMPLEDTONE_PI) - hue;
+                }
+            }
+            // h ∈ [0, π] for b ≤ g
+            // h ∈ [π , 2π] for b > g
 
-			min_value = &red;
-			if (green < *min_value) {
-				min_value = &green;
-			}
-			if (blue < *min_value) {
-				min_value = &blue;
-			}
+            min_value = &red;
+            if (green < *min_value) {
+                min_value = &green;
+            }
+            if (blue < *min_value) {
+                min_value = &blue;
+            }
 
-			// compute saturation
-			saturation = 1.0 - 3.0 * (*min_value); // s ∈ [0,1]
+            // compute saturation
+            saturation = 1.0 - 3.0 * (*min_value); // s ∈ [0,1]
 
-			// intensity
-			intensity = total_rgb / (3.0 * 255.0); // i ∈ [0,1]
+            // intensity
+            intensity = total_rgb / (3.0 * 255.0); // i ∈ [0,1]
 
-			hues[x][y] = hue;
-			saturations[x][y] = saturation;
-			intensities[x][y] = intensity;
-		}
-	}
+            hues[x][y] = hue;
+            saturations[x][y] = saturation;
+            intensities[x][y] = intensity;
+        }
+    }
 
-	// histogram equalize intensities
-	RImage intensityImage(width, height, QImage::Format_Indexed8);
-	intensityImage.setGrayColorTable();
+    // histogram equalize intensities
+    RImage intensityImage(width, height, QImage::Format_Indexed8);
+    intensityImage.setGrayColorTable();
 
-	for (int x = 0; x < width; ++x) {
-		for (int y = 0; y < height; ++y) {
-			intensityImage.setPixel(x, y, (int)(255.0 * intensities[x][y]));
-		}
-	}
-	intensityImage.equalize();
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
+            intensityImage.setPixel(x, y, (int)(255.0 * intensities[x][y]));
+        }
+    }
+    intensityImage.equalize();
 
-	/*
-	ImageWindow *win = new ImageWindow(parentWidget());
-	win->setImage(intensityImage);
-	win->show();
-	*/
+    /*
+    ImageWindow *win = new ImageWindow(parentWidget());
+    win->setImage(intensityImage);
+    win->show();
+    */
 
-	// scale intensities
-	for (int x = 0; x < width; ++x) {
-		for (int y = 0; y < height; ++y) {
-			intensity = (double)intensityImage.pixelIndex(x, y) / 255.0;
-			intensities[x][y] = intensity;
-		}
-	}
+    // scale intensities
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
+            intensity = (double)intensityImage.pixelIndex(x, y) / 255.0;
+            intensities[x][y] = intensity;
+        }
+    }
 
-	// increase saturation
-	for (int x = 0; x < width; ++x) {
-		for (int y = 0; y < height; ++y) {
-			saturation = saturations[x][y];
-			saturation = saturation + 0.05;
-			if (saturation > 1.0) {
-				saturation = 1.0;
-			}
-			saturations[x][y] = saturation;
-		}
-	}
+    // increase saturation
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
+            saturation = saturations[x][y];
+            saturation = saturation + 0.05;
+            if (saturation > 1.0) {
+                saturation = 1.0;
+            }
+            saturations[x][y] = saturation;
+        }
+    }
 
-	/*
-	// set hue (colorize)
-	for (int x = 0; x < width; ++x) {
-		for (int y = 0; y < height; ++y) {
-			//hue = hues[x][y];
-			hue = 2.0 * SAMPLEDTONE_PI / 3.0;
-			hues[x][y] = hue;
-		}
-	}
-	*/
+    /*
+    // set hue (colorize)
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
+            //hue = hues[x][y];
+            hue = 2.0 * SAMPLEDTONE_PI / 3.0;
+            hues[x][y] = hue;
+        }
+    }
+    */
 
-	// convert HSI to RGB
-	double *a, *b, *c;
+    // convert HSI to RGB
+    double *a, *b, *c;
 
-	for (int x = 0; x < width; ++x) {
-		for (int y = 0; y < height; ++y) {
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
 
-			hue = hues[x][y];
-			saturation = saturations[x][y];
-			intensity = intensities[x][y];
+            hue = hues[x][y];
+            saturation = saturations[x][y];
+            intensity = intensities[x][y];
 
-			if (hue < (2.0 / 3.0 * SAMPLEDTONE_PI)) {
-				a = &blue;
-				b = &red;
-				c = &green;
-			} else if (hue < (4.0 / 3.0 * SAMPLEDTONE_PI)) {
-				hue = hue - (2.0 * SAMPLEDTONE_PI / 3.0);
-				a = &red;
-				b = &green;
-				c = &blue;
-			} else {
-				hue = hue - (4.0 / 3.0 * SAMPLEDTONE_PI);
-				a = &green;
-				b = &blue;
-				c = &red;
-			}
+            if (hue < (2.0 / 3.0 * SAMPLEDTONE_PI)) {
+                a = &blue;
+                b = &red;
+                c = &green;
+            } else if (hue < (4.0 / 3.0 * SAMPLEDTONE_PI)) {
+                hue = hue - (2.0 * SAMPLEDTONE_PI / 3.0);
+                a = &red;
+                b = &green;
+                c = &blue;
+            } else {
+                hue = hue - (4.0 / 3.0 * SAMPLEDTONE_PI);
+                a = &green;
+                b = &blue;
+                c = &red;
+            }
 
-			*a = intensity * (1.0 - saturation);
-			denominator = cos((SAMPLEDTONE_PI / 3.0) - hue);
+            *a = intensity * (1.0 - saturation);
+            denominator = cos((SAMPLEDTONE_PI / 3.0) - hue);
 
-			if (PRACTICALLY_ZERO(denominator)) {
-				//*b = 0.0;
-				*b = 0.5;
-			} else {
-				*b = intensity * ((1 + (saturation * cos(hue)) / denominator));
-			}
+            if (PRACTICALLY_ZERO(denominator)) {
+                //*b = 0.0;
+                *b = 0.5;
+            } else {
+                *b = intensity * ((1 + (saturation * cos(hue)) / denominator));
+            }
 
-			*c = (3.0 * intensity) - (*a + *b);
+            *c = (3.0 * intensity) - (*a + *b);
 
-			red = red * 255.0;
-			green = green * 255.0;
-			blue = blue * 255.0;
+            red = red * 255.0;
+            green = green * 255.0;
+            blue = blue * 255.0;
 
-			//reds[x][y] = red;
-			//greens[x][y] = green;
-			//blues[x][y] = blue;
+            //reds[x][y] = red;
+            //greens[x][y] = green;
+            //blues[x][y] = blue;
 
-			if (red > 255.0) {
-				red = 255.0;
-			} else if (red < 0.0) {
-				red = 0.0;
-			}
-			if (green > 255.0) {
-				green = 255.0;
-			} else if (green < 0.0) {
-				green = 0.0;
-			}
-			if (blue > 255.0) {
-				blue = 255.0;
-			} else if (blue < 0.0) {
-				blue = 0.0;
-			}
+            if (red > 255.0) {
+                red = 255.0;
+            } else if (red < 0.0) {
+                red = 0.0;
+            }
+            if (green > 255.0) {
+                green = 255.0;
+            } else if (green < 0.0) {
+                green = 0.0;
+            }
+            if (blue > 255.0) {
+                blue = 255.0;
+            } else if (blue < 0.0) {
+                blue = 0.0;
+            }
 
-			image.setPixel(x, y, qRgb((int)red, (int)green, (int)blue));
-		}
-	}
+            image.setPixel(x, y, qRgb((int)red, (int)green, (int)blue));
+        }
+    }
 
-	reloadPixmap();
+    reloadPixmap();
 }
 
 void ImageWindow::on_actionPredictive_Encode_triggered() {
-	image.predictiveEncode();
-	reloadPixmap();
+    image.predictiveEncode();
+    reloadPixmap();
 }
 
 void ImageWindow::on_actionPredictive_Decode_triggered() {
-	image.predictiveDecode();
-	reloadPixmap();
+    image.predictiveDecode();
+    reloadPixmap();
 }
 
 void ImageWindow::on_actionMagnify_triggered() {
-	MagnifyDialog *dialog = new MagnifyDialog(this);
-	dialog->show();
+    MagnifyDialog *dialog = new MagnifyDialog(this);
+    dialog->show();
 }
 
 void ImageWindow::on_actionShrink_triggered() {
-	ShrinkDialog *dialog = new ShrinkDialog(this);
-	dialog->show();
+    ShrinkDialog *dialog = new ShrinkDialog(this);
+    dialog->show();
 }
 
 void ImageWindow::on_actionRotate_triggered() {
-	RotateDialog *dialog = new RotateDialog(this);
-	dialog->show();
+    RotateDialog *dialog = new RotateDialog(this);
+    dialog->show();
 }

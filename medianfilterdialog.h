@@ -16,7 +16,7 @@ private:
     Ui::MedianFilterDialogClass ui;
 
 private slots:
-	void on_applyFilterButton_pressed();
+    void on_applyFilterButton_pressed();
 
 };
 

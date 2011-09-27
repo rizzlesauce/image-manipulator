@@ -7,7 +7,7 @@
 AverageImagesDialog::AverageImagesDialog(QWidget *parent)
     : QDialog(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 }
 
 AverageImagesDialog::~AverageImagesDialog()
@@ -16,24 +16,24 @@ AverageImagesDialog::~AverageImagesDialog()
 }
 
 void AverageImagesDialog::on_averageButton_pressed() {
-	if (fileNames.size() == 0) {
-			// no files chosen
-	} else {
-		// open the images
+    if (fileNames.size() == 0) {
+            // no files chosen
+    } else {
+        // open the images
 
-		ImageWindow *pwindow = ((ImageWindow*)this->parentWidget());
+        ImageWindow *pwindow = ((ImageWindow*)this->parentWidget());
 
-		//RImage img;
+        //RImage img;
 
-		vector<RImage> images(fileNames.size());
+        vector<RImage> images(fileNames.size());
 
-		for (int i = 0; i < fileNames.size(); ++i) {
-	        images[i].load(fileNames.at(i));
-		}
+        for (int i = 0; i < fileNames.size(); ++i) {
+            images[i].load(fileNames.at(i));
+        }
 
-		pwindow->image.averageWithImages(images);
-		pwindow->setImage(pwindow->image);
-	}
+        pwindow->image.averageWithImages(images);
+        pwindow->setImage(pwindow->image);
+    }
 }
 
 void AverageImagesDialog::on_selectImagesButton_pressed() {
@@ -43,7 +43,7 @@ void AverageImagesDialog::on_selectImagesButton_pressed() {
 
     if (fileNames.size() == 0) {
             // no files chosen
-    	Debugger::getInstance().print("no file chosen");
+        Debugger::getInstance().print("no file chosen");
 
     } else {
             // files chosen

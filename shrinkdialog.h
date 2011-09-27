@@ -16,7 +16,7 @@ private:
     Ui::ShrinkDialogClass ui;
 
 private slots:
-	void on_shrinkButton_pressed();
+    void on_shrinkButton_pressed();
 };
 
 #endif // SHRINKDIALOG_H

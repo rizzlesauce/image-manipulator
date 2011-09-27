@@ -15,7 +15,7 @@ public:
     ImageWindow(QWidget *parent = 0);
     ~ImageWindow();
 
-	void transformAndPlotImage();
+    void transformAndPlotImage();
     void setImage(RImage& img);
     void createHistogram(bool display = true, string fileName = "");
     void plotEqualizationTable(bool display = true, string fileName = "");
@@ -49,14 +49,14 @@ private slots:
     void on_actionFourier_Transform_triggered();
     void on_actionRemove_Interference_triggered();
     void on_actionReverse_Fourier_Transform_triggered();
-	void on_actionUniform_Average_Frequency_triggered();
-	void on_actionCrop_and_Resize_triggered();
-	void on_actionColor_Equalize_triggered();
-	void on_actionPredictive_Encode_triggered();
-	void on_actionPredictive_Decode_triggered();
-	void on_actionMagnify_triggered();
-	void on_actionShrink_triggered();
-	void on_actionRotate_triggered();
+    void on_actionUniform_Average_Frequency_triggered();
+    void on_actionCrop_and_Resize_triggered();
+    void on_actionColor_Equalize_triggered();
+    void on_actionPredictive_Encode_triggered();
+    void on_actionPredictive_Decode_triggered();
+    void on_actionMagnify_triggered();
+    void on_actionShrink_triggered();
+    void on_actionRotate_triggered();
 };
 
 #endif // IMAGEWINDOW_H

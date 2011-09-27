@@ -3,7 +3,7 @@
 CustomFilterDialog::CustomFilterDialog(QWidget *parent)
     : QDialog(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 }
 
 CustomFilterDialog::~CustomFilterDialog()

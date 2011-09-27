@@ -16,7 +16,7 @@ private:
     Ui::GenerateSinusoidImageDialogClass ui;
 
 private slots:
-	void on_generateButton_pressed();
+    void on_generateButton_pressed();
 };
 
 #endif // GENERATESINUSOIDIMAGEDIALOG_H

@@ -17,8 +17,8 @@ private:
     QStringList fileNames;
 
 private slots:
-	void on_selectImagesButton_pressed();
-	void on_averageButton_pressed();
+    void on_selectImagesButton_pressed();
+    void on_averageButton_pressed();
 
 };
 

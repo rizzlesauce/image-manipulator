@@ -5,7 +5,7 @@
 RotateDialog::RotateDialog(QWidget *parent)
     : QDialog(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 }
 
 RotateDialog::~RotateDialog()
@@ -14,9 +14,9 @@ RotateDialog::~RotateDialog()
 }
 
 void RotateDialog::on_rotateButton_pressed() {
-	ImageWindow *win = (ImageWindow*)parentWidget();
+    ImageWindow *win = (ImageWindow*)parentWidget();
 
-	RImage newImage = win->image.rotate(ui.degreesSpinBox->value());
+    RImage newImage = win->image.rotate(ui.degreesSpinBox->value());
 
-	win->setImage(newImage);
+    win->setImage(newImage);
 }

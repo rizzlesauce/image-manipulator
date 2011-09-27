@@ -6,14 +6,14 @@
 // Utils
 //
 class Utils {
-	public:
+    public:
 
-	static Utils& getInstance();
-	std::string itos(int);
-	std::string date(time_t);	
+    static Utils& getInstance();
+    std::string itos(int);
+    std::string date(time_t);    
 
-	private:
-	Utils();
-};	
+    private:
+    Utils();
+};    
 
 #endif
